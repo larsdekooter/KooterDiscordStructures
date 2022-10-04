@@ -68,19 +68,6 @@ export class RepliableInteraction extends Interaction {
     if (!this.replied && !this.deferred)
       throw new Error("Not replied to this interaction!");
     if (typeof options === "string") options = { content: options };
-    if ("embeds" in options) {
-      options.embeds = options.embeds!.map((embed) => {
-        embed.setFooter({
-          text: embed.data.footer
-            ? `${embed.data.footer.text} \u2022 EftelBot \u2022 ${
-                Date.now() - this.createdTimestamp
-              }ms`
-            : `\u2022 ${Date.now() - this.createdTimestamp}ms`,
-          iconURL: "https://eftelbot.kooterman.repl.co/20220508_132216.png",
-        });
-        return embed;
-      });
-    }
     options.ephemeral
       ? (options.flags = InteractionResponseFlags.EPHEMERAL)
       : null;

@@ -10,7 +10,7 @@ export class CategoryChannel extends GuildChannel {
     super(data, client);
     this.children = new CategoryChannelChildManager(
       this.client,
-      this.guild ?? ({} as any),
+      this.guild ?? this.partialGuild ?? ({} as any),
       this
     );
   }

@@ -4,8 +4,10 @@ import { Routes } from "discord-api-types/v10";
 import { Channel } from "./Channel.js";
 import { Client } from "./Client.js";
 import { Guild } from "./Guild.js";
+import { GuildChannelManager } from "./Managers/GuildChannelManager.js";
 import { Member } from "./Member.js";
 import { PermissionsBitField } from "./PermissionsBitField.js";
+import { findChannelType } from "./Util/Channel.js";
 
 export class PartialGuild {
   id: string;
@@ -15,6 +17,7 @@ export class PartialGuild {
   owner?: string;
   permissions: PermissionsBitField;
   features: string[];
+  channels: GuildChannelManager;
   constructor(guild: any, client: Client) {
     this.client = client;
     this.id = guild.id;
@@ -23,13 +26,14 @@ export class PartialGuild {
     this.owner = guild.owner;
     this.permissions = new PermissionsBitField(guild.permissions);
     this.features = guild.features;
+    this.channels = new GuildChannelManager(this.client, guild);
   }
   async fetchChannels(): Promise<Collection<string, Channel>> {
     const rest = this.client.rest;
     const channels = (await rest.get(Routes.guildChannels(this.id))) as any[];
     return channels.reduce(
       (coll: Collection<string, Channel>, channel) =>
-        coll.set(channel.id, new Channel(channel, this.client)),
+        coll.set(channel.id, findChannelType(channel, this.client)),
       new Collection<string, Channel>()
     );
   }

@@ -2,12 +2,17 @@ import { CategoryChannel } from "../CategoryChannel.js";
 import { Client } from "../Client.js";
 import { Guild } from "../Guild.js";
 import { GuildChannel } from "../GuildChannel.js";
+import { PartialGuild } from "../PartialGuild.js";
 import { Manager } from "./Manager.js";
 
 export class CategoryChannelChildManager extends Manager<string, GuildChannel> {
-  guild: Guild;
+  guild: Guild | PartialGuild;
   channel: CategoryChannel;
-  constructor(client: Client, guild: Guild, channel: CategoryChannel) {
+  constructor(
+    client: Client,
+    guild: Guild | PartialGuild,
+    channel: CategoryChannel
+  ) {
     super(client);
     this.guild = guild;
     this.channel = channel;

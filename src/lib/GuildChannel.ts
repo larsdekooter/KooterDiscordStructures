@@ -35,6 +35,9 @@ export class GuildChannel extends Channel {
   get guild() {
     return this.client.guilds.cache.get(this.guildId);
   }
+  get partialGuild() {
+    return this.client.partialGuilds.get(this.guildId);
+  }
   get deleteable() {
     return this.guild?.members.me?.permissions.has(
       PermissionFlagsBits.ManageChannels

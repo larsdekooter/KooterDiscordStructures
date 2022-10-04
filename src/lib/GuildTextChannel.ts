@@ -21,17 +21,17 @@ import {
 } from "@discordjs/builders";
 import { AttachmentBuilder } from "./AttachmentBuilder";
 import { Client } from "./Client.js";
+import { ChannelWebhookManager } from "./Managers/ChannelWebhookManager.js";
 
 export class GuildTextChannel extends GuildChannel {
   defaultAutoArchiveDuration: ThreadAutoArchiveDuration;
   lastMessageId?: string;
   messages: ChannelMessageManager;
-  // lastPinAt?: Date;
   lastPinTimestamp?: string;
   nsfw: boolean;
   threads: GuildTextThreadManager;
   topic?: string;
-  // declare type: ChannelType.GuildText;
+  webhooks: ChannelWebhookManager;
   constructor(data: any, client: Client) {
     super(data, client);
     this.defaultAutoArchiveDuration = data.default_auto_archive_duration;
@@ -41,6 +41,7 @@ export class GuildTextChannel extends GuildChannel {
     this.nsfw = data.nsfw;
     this.threads = new GuildTextThreadManager(this.client, this);
     this.topic = data.topic;
+    this.webhooks = new ChannelWebhookManager(this.client, this);
   }
   get lastPinAt() {
     if (this.lastPinTimestamp) {
