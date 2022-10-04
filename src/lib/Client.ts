@@ -242,4 +242,7 @@ export class Client {
     );
     console.log(`${Colors.red("[DELETED]: ")} Commands`);
   }
+  async loginWithoutFetching(token: string | undefined = process.env.token) {
+    this.rest.setToken(token);
+  }
 }
