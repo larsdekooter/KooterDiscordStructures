@@ -1,6 +1,6 @@
 {
   "name": "kooterdiscordstructures",
-  "version": "1.4.1",
+  "version": "1.4.2",
   "main": "dist/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -30,9 +30,9 @@
   },
   "repository": {
     "type": "git",
-      "url": "https://github.com/larsdekooter/KooterDiscordStructures.git" 
+    "url": "https://github.com/larsdekooter/KooterDiscordStructures.git"
   },
   "bugs": {
-		"url": "https://github.com/larsdekooter/KooterDiscordStructures/issues"
-	}
+    "url": "https://github.com/larsdekooter/KooterDiscordStructures/issues"
+  }
 }
