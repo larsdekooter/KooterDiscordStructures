@@ -204,29 +204,12 @@ export class Client {
   toString() {
     return `${this.id}`;
   }
-  async setCommands(prod = false) {
-    const testGuildId = "950680035411501056";
-    const prodGuildId = "972418027066884116";
+  async setGuildCommands(clientId: string, guildId: string, commands: any[]) {
     if (!this.isReady)
-      throw new Error("Client has to be ready in order to use this");
-    const commands = this.commands
-      .map((command) => command.data)
-      .filter((command) => {
-        if (prod) {
-          return command.name !== "eval" && command.name !== "ticket";
-        } else {
-          return command.name !== "ticket";
-        }
-      });
-    await this.rest.put(
-      Routes.applicationGuildCommands(
-        this.id as string,
-        prod ? prodGuildId : testGuildId
-      ),
-      {
-        body: commands,
-      }
-    );
+      throw new Error("Client needs to be ready in order to use this");
+    await this.rest.put(Routes.applicationGuildCommands(clientId, guildId), {
+      body: commands,
+    });
     this.emit("debug", `${Colors.green("[LOADED]: ")} Commands`);
   }
   async deleteCommands(prod = false) {
@@ -243,6 +226,8 @@ export class Client {
     console.log(`${Colors.red("[DELETED]: ")} Commands`);
   }
   async loginWithoutFetching(token: string | undefined = process.env.token) {
+    if (!token) throw new Error("If you log in, specify a token");
     this.rest.setToken(token);
+    this.emit("ready", this);
   }
 }
