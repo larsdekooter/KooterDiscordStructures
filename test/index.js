@@ -32,7 +32,5 @@ client.on("interactionCreate", (interaction) => {
   console.log("Message", interaction.options.message);
 });
 
-client.login(
-  "OTM4Nzg3ODM2NzU1MzIwODUz.GZ9Wcb.BKvw-liS2JmUB5jZW6xsUcFHXfG4-eKP6rk8GA"
-);
+client.login("");
 app.listen(3000);
