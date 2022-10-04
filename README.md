@@ -32,5 +32,5 @@ client.on('interactionCreate', async (interaction) => {
 // (discord.js/rest will wait until the ratelimit is over, so if you do do it, startup might take a while)
 client.login('your-bot-token');
 
-app.listen(8000, () => console.log('App listening at http://localhost:3000'))
+app.listen(8000, () => console.log('App listening at http://localhost:8000'))
 ```
