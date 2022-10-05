@@ -34,7 +34,6 @@ export * from "./lib/PermissionsBitField.js";
 export * from "./lib/RepliableInteraction.js";
 export * from "./lib/Role.js";
 export * from "./lib/SelectMenuInteraction.js";
-export * from "./lib/Snowflake.js";
 export * from "./lib/Sticker.js";
 export * from "./lib/User.js";
 
@@ -49,3 +48,13 @@ export * from "./lib/Util/OptionTypes.js";
 export * from "./lib/Util/Options.js";
 export * from "./lib/Util/ReplyOptions.js";
 export * from "./lib/Util/Utils.js";
+
+export {
+  verifyKey,
+  verifyKeyMiddleware,
+  InteractionResponseType,
+  InteractionResponseFlags,
+} from "discord-interactions";
+export * from "@discordjs/rest";
+export * from "discord-api-types/v10";
+export * from "discord-api-types/globals";
