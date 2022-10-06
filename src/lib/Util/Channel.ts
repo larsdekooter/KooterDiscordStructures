@@ -79,3 +79,31 @@ type Channels =
   | GuildVoiceChannel
   | ThreadChannel
   | Channel;
+
+export function findTextChannelType(apiChannel: any, client: Client) {
+  let channel: GuildTextChannel | ThreadChannel | VoiceChannel;
+
+  switch (apiChannel.type) {
+    case ChannelType.GuildAnnouncement: {
+      channel = new NewsChannel(apiChannel, client);
+      break;
+    }
+    case ChannelType.GuildText: {
+      channel = new TextChannel(apiChannel, client);
+      break;
+    }
+    case ChannelType.GuildVoice: {
+      channel = new VoiceChannel(apiChannel, client);
+      break;
+    }
+    case ChannelType.PrivateThread || ChannelType.PublicThread: {
+      channel = new ThreadChannel(apiChannel, client);
+      break;
+    }
+    default: {
+      channel = new GuildTextChannel(apiChannel, client);
+      break;
+    }
+  }
+  return channel;
+}
