@@ -115,9 +115,7 @@ export class Client {
               break;
             }
           }
-          interaction.channel = await this.channels.fetch(
-            interaction.channelId
-          );
+          await this.channels.fetch(interaction.channelId);
           if (interaction.guildId) {
             interaction.guild = (await this.guilds.fetch(
               interaction.guildId

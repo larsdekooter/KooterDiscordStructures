@@ -46,7 +46,6 @@ export class Interaction {
   client: Client;
   _member: Object;
   member: Member | null;
-  channel: Channel | null;
   guild: Guild | null;
   appPermissions: PermissionsBitField;
 
@@ -68,7 +67,6 @@ export class Interaction {
     this.client = client;
     this._member = interaction.member;
     this.member = null;
-    this.channel = null;
     this.guild = null;
     this.appPermissions = new PermissionsBitField(interaction.app_permissions);
   }
@@ -161,5 +159,10 @@ export class Interaction {
   }
   get createdAt() {
     return new Date(this.createdTimestamp);
+  }
+  get channel() {
+    const channel = this.client.channels.cache.get(this.channelId);
+    if (!channel?.isTextBased()) return null;
+    return channel ?? null;
   }
 }
