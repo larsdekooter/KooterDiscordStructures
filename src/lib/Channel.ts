@@ -49,4 +49,7 @@ export class Channel {
   inGuild(): this is GuildChannel {
     return "guild_id" in this.#data;
   }
+  toString(): `<#${string}>` {
+    return `<#${this.id}>`;
+  }
 }
