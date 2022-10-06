@@ -47,6 +47,6 @@ export class Channel {
     return ThreadChannelTypes.includes(this.type);
   }
   inGuild(): this is GuildChannel {
-    return "guild" in this.#data;
+    return "guild_id" in this.#data;
   }
 }
