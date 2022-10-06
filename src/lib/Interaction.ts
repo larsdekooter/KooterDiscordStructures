@@ -25,6 +25,7 @@ import { CommandInteraction } from "./CommandInteraction.js";
 import { UserContextMenuCommandInteraction } from "./UserContextMenuCommandInteraction.js";
 import { MessageContextMenuCommandInteraction } from "./MessageContextMenuCommandInteraction.js";
 import { MessageComponentInteraction } from "./MessageComponentInteraction.js";
+import { GuildTextChannel } from "./GuildTextChannel.js";
 
 export class Interaction {
   res: Response;
@@ -144,10 +145,14 @@ export class Interaction {
     }
   }
   async getChannel(force = false) {
-    if (!force && this.client.channels.cache.has(this.channelId))
-      return this.client.channels.cache.get(this.channelId);
+    if (!force && this.client.channels.cache.has(this.channelId)) {
+      const channel = this.client.channels.cache.get(this.channelId);
+      if (!channel?.isTextBased()) return null;
+      return channel;
+    }
     const channel = await this.client.channels.fetch(this.channelId);
     if (!channel) return null;
+    if (!channel.isTextBased()) return null;
     this.client.channels.cache.set(channel.id, channel);
     return channel;
   }
