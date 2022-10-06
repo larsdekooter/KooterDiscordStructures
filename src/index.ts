@@ -46,9 +46,9 @@ export * from "./lib/MessageContextMenuCommandInteractionOptionResolver.js";
 export * from "./lib/NewsChannel.js";
 export * from "./lib/StageChannel.js";
 export * from "./lib/TextChannel.js";
-export * from "./lib/ThreadChannel";
+export * from "./lib/ThreadChannel.js";
 export * from "./lib/UserContextMenuCommandInteraction.js";
-export * from "./lib/UserContextMenuCommandInteractionOptionResolver";
+export * from "./lib/UserContextMenuCommandInteractionOptionResolver.js";
 export * from "./lib/VoiceChannel.js";
 export * from "./lib/Webhook.js";
 
