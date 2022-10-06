@@ -5,6 +5,27 @@ import { User } from "./User.js";
 import { Channel } from "./Channel.js";
 import { MessageOptions } from "./Util/Channel.js";
 import { RawFile } from "@discordjs/rest";
+import {
+  ActionRowBuilder,
+  ButtonBuilder,
+  EmbedBuilder,
+  SelectMenuBuilder,
+} from "@discordjs/builders";
+import { AttachmentBuilder } from "./AttachmentBuilder.js";
+
+type SendOptions = {
+  content?: string;
+  tts?: boolean;
+  embeds?: EmbedBuilder[] | Object[];
+  components?: ActionRowBuilder<ButtonBuilder | SelectMenuBuilder>[];
+  files?: AttachmentBuilder[] | string[];
+  allowed_mentions?: {
+    users?: [];
+    roles?: [];
+    channels?: [];
+    replied_user?: boolean;
+  };
+};
 export class Webhook {
   client: Client;
   id: string;
@@ -38,7 +59,8 @@ export class Webhook {
       : null;
   }
   async send(options: MessageOptions) {
-    options = typeof options === "string" ? { content: options } : options;
+    let sendOptions: SendOptions;
+    sendOptions = typeof options === "string" ? { content: options } : options;
 
     const files = options.files?.map((file) => {
       if (typeof file !== "string") {
@@ -53,8 +75,14 @@ export class Webhook {
         } as RawFile;
       }
     });
+    sendOptions.allowed_mentions = {
+      users: options.allowedMentions?.users,
+      roles: options.allowedMentions?.roles,
+      channels: options.allowedMentions?.channels,
+      replied_user: options.allowedMentions?.repliedUser,
+    };
     return await this.client.rest.post(Routes.webhook(this.id, this.token), {
-      body: options,
+      body: sendOptions,
       files,
     });
   }

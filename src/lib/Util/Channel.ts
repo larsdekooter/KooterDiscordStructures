@@ -23,6 +23,12 @@ export type MessageOptions = {
   embeds?: EmbedBuilder[] | Object[];
   components?: ActionRowBuilder<ButtonBuilder | SelectMenuBuilder>[];
   files?: AttachmentBuilder[] | string[];
+  allowedMentions?: {
+    users?: [];
+    roles?: [];
+    channels?: [];
+    repliedUser?: boolean;
+  };
 };
 
 export function findChannelType(apiChannel: any, client: Client) {
