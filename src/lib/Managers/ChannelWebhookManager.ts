@@ -42,4 +42,7 @@ export class ChannelWebhookManager extends Manager<string, Webhook> {
     this.cache.set(webhook.id, webhook);
     return webhook;
   }
+  private _add(data: Webhook) {
+    this.cache.set(data.id, data);
+  }
 }

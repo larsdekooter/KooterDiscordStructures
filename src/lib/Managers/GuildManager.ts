@@ -24,4 +24,7 @@ export class GuildManager extends Manager<string, Guild> {
       return guild;
     }
   }
+  private _add(data: Guild) {
+    this.cache.set(data.id, data);
+  }
 }

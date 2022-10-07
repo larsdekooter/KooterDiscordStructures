@@ -19,8 +19,8 @@ export class UserManager extends Manager<string, User> {
       }
     }
   }
-  _add(data: any) {
-    this.cache.set(data.id, new User(data, this.client));
+  private _add(data: User) {
+    this.cache.set(data.id, data);
     return this.cache.get(data.id);
   }
 }

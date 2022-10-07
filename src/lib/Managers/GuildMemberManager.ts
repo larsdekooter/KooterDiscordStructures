@@ -65,4 +65,7 @@ export class GuildMemberManager extends Manager<string, Member> {
       Routes.guildMember(this.guild.id, userId)
     );
   }
+  private _add(data: Member) {
+    this.cache.set(data.id, data);
+  }
 }

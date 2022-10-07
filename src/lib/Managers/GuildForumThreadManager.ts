@@ -9,4 +9,7 @@ export class GuildForumThreadManager extends Manager<string, ThreadChannel> {
     super(client);
     this.channel = channel;
   }
+  private _add(data: ThreadChannel) {
+    this.cache.set(data.id, data);
+  }
 }

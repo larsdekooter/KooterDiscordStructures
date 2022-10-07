@@ -36,4 +36,7 @@ export class GuildRoleManager extends Manager<string, Role> {
     this.guild.roles.cache.set(role.id, role);
     return role;
   }
+  private _add(data: Role) {
+    this.cache.set(data.id, data);
+  }
 }

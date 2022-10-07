@@ -84,4 +84,8 @@ export class GuildChannelManager extends Manager<string, GuildChannel> {
     const channel = findChannelType(apichannel, this.client);
     return channel;
   }
+  private _add(data: GuildChannel) {
+    this.cache.set(data.id, data);
+    this.client.channels.cache.set(data.id, data);
+  }
 }

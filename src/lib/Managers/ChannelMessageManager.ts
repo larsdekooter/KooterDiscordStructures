@@ -64,4 +64,7 @@ export class ChannelMessageManager extends Manager<string, Message> {
       return messages;
     }
   }
+  private _add(data: Message) {
+    this.cache.set(data.id, data);
+  }
 }
