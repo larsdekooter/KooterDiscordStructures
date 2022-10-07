@@ -56,7 +56,7 @@ export class Client extends EventEmitter {
   modals = new Collection<string, Command>();
   collectors = new Collection<number, Collector>();
   modalCollectors = new Collection<number, ModalCollector>();
-  rest!: REST;
+  rest: REST;
   guilds = new GuildManager(this);
   channels = new ChannelManager(this);
   app: Express;
@@ -71,6 +71,7 @@ export class Client extends EventEmitter {
     interactionOptions?: { clientPublicKey: string; route: string }
   ) {
     super();
+    this.rest = new REST();
     this.app = app;
     this.#latestResponseStatusCode = 200;
     if (interactionOptions) {
@@ -151,7 +152,7 @@ export class Client extends EventEmitter {
   }
   async login(token = process.env.token) {
     if (!token) throw new Error("Token is required");
-    this.rest = new REST({ version: "10" }).setToken(token);
+    this.rest.setToken(token);
     this.rest.on("response", (req, res) => {
       // Amount of ms the ratelimit is going to take
       const retryData =
