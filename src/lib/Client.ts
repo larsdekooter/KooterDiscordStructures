@@ -15,7 +15,7 @@ import { UserManager } from "./Managers/UserManager.js";
 import { Message } from "./Message.js";
 import { ModalCollector } from "./ModalCollector.js";
 import { Colors } from "./Util/Colors.js";
-import { Collector } from "./Collector.js";
+import { Collector, CollectorEvents } from "./Collector.js";
 import { PartialGuild } from "./PartialGuild.js";
 import { ClientEvents } from "./Util/ClientEvents.js";
 import { Interaction } from "./Interaction.js";
@@ -28,14 +28,29 @@ import { ModalSubmitInteraction } from "./ModalSubmitInteraction.js";
 import { Guild } from "./Guild.js";
 import { MessageContextMenuCommandInteraction } from "./MessageContextMenuCommandInteraction.js";
 import { UserContextMenuCommandInteraction } from "./UserContextMenuCommandInteraction.js";
+import EventEmitter from "events";
 
 export enum RESTResponseStatusCodes {
   RateLimit = 429,
 }
 
-export class Client {
+export declare interface Client {
+  on<K extends keyof ClientEvents>(
+    event: K,
+    listener: (...args: ClientEvents[K]) => void
+  ): any;
+  once<K extends keyof ClientEvents>(
+    event: K,
+    listener: (...args: ClientEvents[K]) => void
+  ): any;
+  emit<K extends keyof ClientEvents>(
+    eventName: K,
+    ...args: ClientEvents[K]
+  ): any;
+}
+
+export class Client extends EventEmitter {
   #latestResponseStatusCode: RESTResponseStatusCodes;
-  #onEvents = new Collection<string, { name: string; func: Function }>();
   commands = new Collection<string, Command>();
   components = new Collection<string, Command>();
   modals = new Collection<string, Command>();
@@ -55,6 +70,7 @@ export class Client {
     app: Express,
     interactionOptions?: { clientPublicKey: string; route: string }
   ) {
+    super();
     this.app = app;
     this.#latestResponseStatusCode = 200;
     if (interactionOptions) {
@@ -184,17 +200,6 @@ export class Client {
     );
     this.emit("ready", this);
     return this;
-  }
-  on<K extends keyof ClientEvents>(
-    name: K,
-    func: (...args: ClientEvents[K]) => any
-  ) {
-    this.#onEvents.set(name, { func, name });
-  }
-  emit<K extends keyof ClientEvents>(name: K, ...data: ClientEvents[K]) {
-    this.#onEvents
-      .filter((event) => event.name === name)
-      .forEach((event) => event.func(...data));
   }
   toString() {
     return `${this.id}`;
