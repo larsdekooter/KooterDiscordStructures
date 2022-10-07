@@ -7,7 +7,6 @@ import {
   Routes,
 } from "discord-api-types/v10";
 import e, { Express } from "express";
-import { Channel } from "./Channel.js";
 import { Command } from "./Command.js";
 import { ChatInputCommandInteraction } from "./ChatInputCommandInteraction.js";
 import { ChannelManager } from "./Managers/ChannelManager.js";
@@ -15,8 +14,6 @@ import { GuildManager } from "./Managers/GuildManager.js";
 import { UserManager } from "./Managers/UserManager.js";
 import { Message } from "./Message.js";
 import { ModalCollector } from "./ModalCollector.js";
-import { User } from "./User.js";
-import { readdirSync } from "fs";
 import { Colors } from "./Util/Colors.js";
 import { Collector } from "./Collector.js";
 import { PartialGuild } from "./PartialGuild.js";

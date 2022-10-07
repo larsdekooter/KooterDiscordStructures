@@ -1,8 +1,4 @@
-import {
-  APIGuildVoiceChannel,
-  ChannelType,
-  PermissionFlagsBits,
-} from "discord-api-types/v10";
+import { PermissionFlagsBits } from "discord-api-types/v10";
 import { Client } from "./Client.js";
 import { GuildChannel } from "./GuildChannel.js";
 

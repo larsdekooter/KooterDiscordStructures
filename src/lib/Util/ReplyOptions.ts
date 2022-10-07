@@ -1,6 +1,5 @@
 import {
   ActionRowBuilder,
-  AnyComponentBuilder,
   ButtonBuilder,
   EmbedBuilder,
   SelectMenuBuilder,

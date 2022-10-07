@@ -9,7 +9,6 @@ import {
 } from "discord-api-types/v10";
 import { AutocompleteInteraction } from "./AutocompleteInteraction.js";
 import { ButtonInteraction } from "./ButtonInteraction.js";
-import { Channel } from "./Channel.js";
 import { Client } from "./Client.js";
 import { ChatInputCommandInteraction } from "./ChatInputCommandInteraction.js";
 import { Guild } from "./Guild.js";
@@ -25,7 +24,6 @@ import { CommandInteraction } from "./CommandInteraction.js";
 import { UserContextMenuCommandInteraction } from "./UserContextMenuCommandInteraction.js";
 import { MessageContextMenuCommandInteraction } from "./MessageContextMenuCommandInteraction.js";
 import { MessageComponentInteraction } from "./MessageComponentInteraction.js";
-import { GuildTextChannel } from "./GuildTextChannel.js";
 
 export class Interaction {
   res: Response;

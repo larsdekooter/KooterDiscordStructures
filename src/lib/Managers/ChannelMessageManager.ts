@@ -2,7 +2,6 @@ import { Collection } from "@discordjs/collection";
 import { makeURLSearchParams } from "@discordjs/rest";
 import { Routes } from "discord-api-types/v10";
 import { MessageFetchOptions } from "../Util/Options.js";
-import { Channel } from "../Channel.js";
 import { Client } from "../Client.js";
 import { Message } from "../Message.js";
 import { Manager } from "./Manager.js";

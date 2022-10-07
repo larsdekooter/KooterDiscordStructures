@@ -1,6 +1,4 @@
-import { Collection } from "@discordjs/collection";
 import { Routes } from "discord-api-types/v10";
-import { Client } from "../Client.js";
 import { User } from "../User.js";
 import { Manager } from "./Manager.js";
 

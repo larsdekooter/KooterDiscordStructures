@@ -13,7 +13,6 @@ import { GuildChannelManager } from "./Managers/GuildChannelManager.js";
 import { GuildMemberManager } from "./Managers/GuildMemberManager.js";
 import { GuildRoleManager } from "./Managers/GuildRoleManager.js";
 import { PartialGuild } from "./PartialGuild.js";
-import { Role } from "./Role.js";
 import { Sticker } from "./Sticker.js";
 
 export class Guild {

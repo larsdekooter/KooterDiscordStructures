@@ -3,7 +3,6 @@ import { Client } from "./Client.js";
 import { MessageComponentInteraction } from "./MessageComponentInteraction.js";
 import { Message } from "./Message.js";
 import { EventEmitter } from "events";
-import { ButtonInteraction } from "./ButtonInteraction.js";
 import { CollectorOptions } from "./Util/CollectorOptions.js";
 import { Channel } from "./Channel.js";
 

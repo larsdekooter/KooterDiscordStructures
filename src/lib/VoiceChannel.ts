@@ -6,12 +6,7 @@ import {
 } from "@discordjs/builders";
 import { Collection } from "@discordjs/collection";
 import { DiscordSnowflake } from "@sapphire/snowflake";
-import {
-  APIGuildVoiceChannel,
-  ChannelType,
-  Routes,
-  VideoQualityMode,
-} from "discord-api-types/v10";
+import { ChannelType, Routes, VideoQualityMode } from "discord-api-types/v10";
 import { AttachmentBuilder } from "./AttachmentBuilder.js";
 import { Client } from "./Client.js";
 import { Collector } from "./Collector.js";

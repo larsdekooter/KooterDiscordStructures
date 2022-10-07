@@ -1,9 +1,5 @@
 import { Collection } from "@discordjs/collection";
-import {
-  APIGuildChannel,
-  PermissionFlagsBits,
-  Routes,
-} from "discord-api-types/v10";
+import { PermissionFlagsBits, Routes } from "discord-api-types/v10";
 import { CategoryChannel } from "./CategoryChannel.js";
 import { Channel } from "./Channel.js";
 import { Client } from "./Client.js";

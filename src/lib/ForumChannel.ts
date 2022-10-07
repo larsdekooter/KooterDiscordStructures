@@ -1,9 +1,7 @@
 import {
-  APIGuildForumChannel,
   APIGuildForumDefaultReactionEmoji,
   ChannelType,
   SortOrderType,
-  TeamMemberMembershipState,
   ThreadAutoArchiveDuration,
 } from "discord-api-types/v10";
 import { Client } from "./Client.js";

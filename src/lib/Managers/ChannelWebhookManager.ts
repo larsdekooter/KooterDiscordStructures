@@ -1,7 +1,6 @@
 import { APIWebhook, Routes } from "discord-api-types/v10";
 import { Client } from "../Client.js";
 import { GuildTextChannel } from "../GuildTextChannel.js";
-import { TextChannel } from "../TextChannel.js";
 import { Webhook } from "../Webhook.js";
 import { Manager } from "./Manager.js";
 

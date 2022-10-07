@@ -1,9 +1,7 @@
 import { Collection } from "@discordjs/collection";
 import { EventEmitter } from "events";
-import { CollectorOptions } from "./Util/CollectorOptions.js";
 import { AwaitModalSubmitOptions } from "./Util/ReplyOptions.js";
 import { Client } from "./Client.js";
-import { Message } from "./Message.js";
 import { ModalSubmitInteraction } from "./ModalSubmitInteraction.js";
 
 let startNumber = 1;

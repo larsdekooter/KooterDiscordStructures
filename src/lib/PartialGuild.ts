@@ -1,5 +1,4 @@
 import { Collection } from "@discordjs/collection";
-import { makeURLSearchParams } from "@discordjs/rest";
 import { Routes } from "discord-api-types/v10";
 import { Channel } from "./Channel.js";
 import { Client } from "./Client.js";

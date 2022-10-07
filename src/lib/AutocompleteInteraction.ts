@@ -1,6 +1,5 @@
 import { Snowflake } from "discord-api-types/globals";
 import {
-  APIInteraction,
   ApplicationCommandOptionType,
   InteractionResponseType,
 } from "discord-api-types/v10";

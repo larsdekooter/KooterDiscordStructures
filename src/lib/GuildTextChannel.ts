@@ -1,10 +1,5 @@
 import { Collection } from "@discordjs/collection";
-import {
-  APIGuildTextChannel,
-  ChannelType,
-  Routes,
-  ThreadAutoArchiveDuration,
-} from "discord-api-types/v10";
+import { Routes, ThreadAutoArchiveDuration } from "discord-api-types/v10";
 import { Collector } from "./Collector.js";
 import { GuildChannel } from "./GuildChannel.js";
 import { ChannelMessageManager } from "./Managers/ChannelMessageManager.js";

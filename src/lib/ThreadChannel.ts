@@ -7,7 +7,6 @@ import {
 import { Collection } from "@discordjs/collection";
 import { DiscordSnowflake } from "@sapphire/snowflake";
 import {
-  APIThreadChannel,
   ChannelType,
   Routes,
   ThreadAutoArchiveDuration,

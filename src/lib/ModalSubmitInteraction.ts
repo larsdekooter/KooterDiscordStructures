@@ -1,9 +1,5 @@
 import { ActionRowBuilder, TextInputBuilder } from "@discordjs/builders";
 import { Routes } from "discord-api-types/v10";
-import {
-  InteractionResponseFlags,
-  InteractionResponseType,
-} from "discord-interactions";
 import { Client } from "./Client.js";
 import { Message } from "./Message.js";
 import { RepliableInteraction } from "./RepliableInteraction.js";
