@@ -34,19 +34,19 @@ export enum RESTResponseStatusCodes {
   RateLimit = 429,
 }
 
-export declare interface Client {
+export declare interface Client extends EventEmitter {
   on<K extends keyof ClientEvents>(
     event: K,
     listener: (...args: ClientEvents[K]) => void
-  ): any;
+  ): this;
   once<K extends keyof ClientEvents>(
     event: K,
     listener: (...args: ClientEvents[K]) => void
-  ): any;
+  ): this;
   emit<K extends keyof ClientEvents>(
     eventName: K,
     ...args: ClientEvents[K]
-  ): any;
+  ): boolean;
 }
 
 export class Client extends EventEmitter {
