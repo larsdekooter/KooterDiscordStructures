@@ -50,7 +50,7 @@ export declare interface Client extends EventEmitter {
 }
 
 export class Client extends EventEmitter {
-  #latestResponseStatusCode: RESTResponseStatusCodes;
+  latestResponseStatusCode: RESTResponseStatusCodes;
   commands = new Collection<string, Command>();
   components = new Collection<string, Command>();
   modals = new Collection<string, Command>();
@@ -73,7 +73,7 @@ export class Client extends EventEmitter {
     super();
     this.rest = new REST();
     this.app = app;
-    this.#latestResponseStatusCode = 200;
+    this.latestResponseStatusCode = 200;
     if (interactionOptions) {
       this.app.post(
         interactionOptions.route,
@@ -145,10 +145,10 @@ export class Client extends EventEmitter {
     }
   }
   get isRatelimited() {
-    return this.#latestResponseStatusCode === RESTResponseStatusCodes.RateLimit;
+    return this.latestResponseStatusCode === RESTResponseStatusCodes.RateLimit;
   }
   get latestCode() {
-    return this.#latestResponseStatusCode;
+    return this.latestResponseStatusCode;
   }
   async login(token = process.env.token) {
     if (!token) throw new Error("Token is required");
@@ -171,7 +171,7 @@ export class Client extends EventEmitter {
           (retryData / 1000 / 60).toFixed(1) +
           "h";
       }
-      this.#latestResponseStatusCode = res.statusCode;
+      this.latestResponseStatusCode = res.statusCode;
       this.emit("debug", data);
     });
     const guildData = ((await this.rest.get(Routes.userGuilds())) as any[]).map(
