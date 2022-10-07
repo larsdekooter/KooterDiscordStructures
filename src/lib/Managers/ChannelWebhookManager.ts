@@ -15,16 +15,7 @@ export class ChannelWebhookManager extends Manager<string, Webhook> {
     super(client);
     this.channel = channel;
   }
-  async fetch(id?: string) {
-    if (id) {
-      const webhook = new Webhook(
-        (await this.client.rest.get(Routes.webhook(id))) as APIWebhook,
-        this.client
-      );
-      this._add(webhook);
-      if (webhook) return webhook;
-      return null;
-    }
+  async fetch() {
     return (
       (await this.client.rest.get(
         Routes.channelWebhooks(this.channel.id)
@@ -44,5 +35,11 @@ export class ChannelWebhookManager extends Manager<string, Webhook> {
   }
   private _add(data: Webhook) {
     this.cache.set(data.id, data);
+  }
+  async fetchSingle(id: string, token?: string) {
+    return new Webhook(
+      (await this.client.rest.get(Routes.webhook(id, token))) as APIWebhook,
+      this.client
+    );
   }
 }
