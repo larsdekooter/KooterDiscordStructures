@@ -10,7 +10,7 @@ export class ChannelManager extends Manager<string, Channel> {
       this.client.partialGuilds.forEach(async (guild: PartialGuild) => {
         const guildChannels = await guild.fetchChannels();
         guildChannels.forEach((channel) => {
-          this.cache.set(channel.id, channel);
+          this._add(channel);
         });
         resolve(this.cache);
       });

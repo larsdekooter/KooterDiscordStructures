@@ -30,9 +30,9 @@ export class ChannelMessageManager extends Manager<string, Message> {
         ),
         this.client
       );
-      this.cache.set(message.id, message);
+      this._add(message);
       if (this.channel.inGuild() && this.channel.isTextBased()) {
-        this.channel.messages.cache.set(message.id, message);
+        this.channel.messages._add(message);
       }
       return message;
     }
@@ -43,9 +43,9 @@ export class ChannelMessageManager extends Manager<string, Message> {
         ),
         this.client
       );
-      this.cache.set(message.id, message);
+      this._add(message);
       if (this.channel.inGuild() && this.channel.isTextBased()) {
-        this.channel.messages.cache.set(message.id, message);
+        this.channel.messages._add(message);
       }
       return message;
     } else {
@@ -58,7 +58,7 @@ export class ChannelMessageManager extends Manager<string, Message> {
         .reduce((coll, message) => coll.set(message.id, message), this.cache);
       messages.forEach((message) => {
         if (message.channel?.inGuild() && message.channel.isTextBased()) {
-          message.channel?.messages.cache.set(message.id, message);
+          message.channel?.messages._add(message);
         }
       });
       return messages;

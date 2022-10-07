@@ -10,7 +10,7 @@ export class GuildManager extends Manager<string, Guild> {
         await this.client.rest.get(`/guilds/${id}?with_counts=true`),
         this.client
       );
-      this.cache.set(guild.id, guild);
+      this._add(guild);
       this.client.emit("guildUpdate", oldGuild, guild);
       return guild;
     } else {
@@ -19,7 +19,7 @@ export class GuildManager extends Manager<string, Guild> {
         await this.client.rest.get(`/guilds/${id}?with_counts=true`),
         this.client
       );
-      this.cache.set(guild.id, guild);
+      this._add(guild);
       this.client.emit("guildUpdate", oldGuild, guild);
       return guild;
     }

@@ -18,7 +18,7 @@ export class CategoryChannelChildManager extends Manager<string, GuildChannel> {
     this.channel = channel;
     this.guild.channels.cache
       .filter((channel) => channel.parentId === this.channel.id)
-      .forEach((channel) => this.cache.set(channel.id, channel));
+      .forEach((channel) => this._add(channel));
   }
   private _add(data: GuildChannel) {
     this.cache.set(data.id, data);

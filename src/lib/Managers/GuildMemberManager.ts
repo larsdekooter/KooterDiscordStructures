@@ -23,7 +23,7 @@ export class GuildMemberManager extends Manager<string, Member> {
         await this.client.rest.get(Routes.guildMember(this.guild.id, id)),
         this.guild
       );
-      this.cache.set(member.id, member);
+      this._add(member);
       return member;
     } else {
       const members = (await this.client.rest.get(
@@ -57,7 +57,7 @@ export class GuildMemberManager extends Manager<string, Member> {
       }),
       this.guild
     );
-    this.cache.set(updatedMember.id, updatedMember);
+    this._add(updatedMember);
     return updatedMember;
   }
   async remove(userId: string) {

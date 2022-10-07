@@ -10,7 +10,7 @@ export class UserManager extends Manager<string, User> {
     if (force) {
       const apiUser = await this.client.rest.get(Routes.user(id));
       const user = new User(apiUser, this.client);
-      this.cache.set(user.id, user);
+      this._add(user);
       return user;
     } else {
       if (this.cache.has(id)) return this.cache.get(id) ?? null;

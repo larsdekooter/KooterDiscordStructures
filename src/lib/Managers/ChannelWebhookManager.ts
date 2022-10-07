@@ -22,6 +22,7 @@ export class ChannelWebhookManager extends Manager<string, Webhook> {
         (await this.client.rest.get(Routes.webhook(id))) as APIWebhook,
         this.client
       );
+      this._add(webhook);
       if (webhook) return webhook;
       return null;
     }
@@ -39,7 +40,7 @@ export class ChannelWebhookManager extends Manager<string, Webhook> {
       { body: options }
     )) as APIWebhook;
     const webhook = new Webhook(apiWebhook, this.client);
-    this.cache.set(webhook.id, webhook);
+    this._add(webhook);
     return webhook;
   }
   private _add(data: Webhook) {
