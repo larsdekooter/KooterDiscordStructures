@@ -3,9 +3,9 @@ import { InteractionType } from "discord-interactions";
 import { ResolvedOptions } from "./Util/OptionTypes.js";
 
 import { ChatInputCommandInteractionOptionResolver } from "./ChatInputCommandInteractionOptionResolver.js";
-import { RepliableInteraction } from "./RepliableInteraction.js";
 import { Response } from "./Util/HTTPTypes.js";
 import { Client } from "./Client.js";
+import { CommandInteraction } from "./CommandInteraction.js";
 export type CommandInteractionData = {
   guildId: string;
   id: string;
@@ -22,7 +22,7 @@ export type CommandInteractionOption = {
   options?: CommandInteractionOption[];
 };
 
-export class ChatInputCommandInteraction extends RepliableInteraction {
+export class ChatInputCommandInteraction extends CommandInteraction {
   data: CommandInteractionData;
   options: ChatInputCommandInteractionOptionResolver;
   constructor(res: Response, interaction: any, client: Client) {
