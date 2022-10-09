@@ -2,6 +2,7 @@ import { Snowflake } from "discord-api-types/globals";
 import {
   ApplicationCommandOptionType,
   InteractionResponseType,
+  LocalizationMap,
 } from "discord-api-types/v10";
 import { Client } from "./Client.js";
 import { Interaction } from "./Interaction.js";
@@ -37,12 +38,19 @@ export class AutocompleteInteraction extends Interaction {
   get commandName() {
     return this.data.name;
   }
-  async respond(items: { value: string; name: string }[]) {
+  async respond(
+    items: { value: string; name: string; nameLocalizations: LocalizationMap }[]
+  ) {
     if (this.responded)
       throw new Error("Already Responded to this interaction");
+    const choises = items.map((item) => ({
+      name: item.name,
+      value: item.value,
+      name_Localizations: item.nameLocalizations,
+    }));
     this.res.send({
       data: {
-        choises: items,
+        choises,
       },
       type: InteractionResponseType.ApplicationCommandAutocompleteResult,
     });
