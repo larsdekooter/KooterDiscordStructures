@@ -73,3 +73,5 @@ export {
 export * from "@discordjs/rest";
 export * from "discord-api-types/v10";
 export * from "discord-api-types/globals";
+export * from "@discordjs/builders";
+export * from "@discordjs/collection";
