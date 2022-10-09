@@ -5,6 +5,7 @@ import { Channel } from "./Channel.js";
 import { Client } from "./Client.js";
 import { PermissionOverwriteManager } from "./Managers/PermissionOverwriteManager.js";
 import { Member } from "./Member.js";
+import { PermissionOverwrites } from "./PermissionOverwrite.js";
 import { PermissionsBitField } from "./PermissionsBitField.js";
 import { Role } from "./Role.js";
 
@@ -76,7 +77,7 @@ export class GuildChannel extends Channel {
     if (!verified) member = this.guild?.members.cache.get(member!.id);
     roles ??= member!.roles.cache;
 
-    const roleOverwrites = [];
+    const roleOverwrites: PermissionOverwrites[] = [];
     let memberOverwrites;
     let everyoneOverwrites;
 
