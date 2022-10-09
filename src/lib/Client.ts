@@ -1,6 +1,7 @@
 import { Collection } from "@discordjs/collection";
 import { REST } from "@discordjs/rest";
 import {
+  APIApplication,
   ApplicationCommandType,
   ComponentType,
   InteractionType,
@@ -29,6 +30,7 @@ import { Guild } from "./Guild.js";
 import { MessageContextMenuCommandInteraction } from "./MessageContextMenuCommandInteraction.js";
 import { UserContextMenuCommandInteraction } from "./UserContextMenuCommandInteraction.js";
 import EventEmitter from "events";
+import { ClientApplication } from "./ClientApplication.js";
 
 export enum RESTResponseStatusCodes {
   RateLimit = 429,
@@ -66,6 +68,7 @@ export class Client extends EventEmitter {
   token = process.env.token;
   messages = new Collection<string, Message>();
   users = new UserManager(this);
+  application = new ClientApplication({} as APIApplication, this);
   constructor(
     app: Express,
     interactionOptions?: { clientPublicKey: string; route: string }

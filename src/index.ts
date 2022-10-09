@@ -63,6 +63,7 @@ export * from "./lib/Util/OptionTypes.js";
 export * from "./lib/Util/Options.js";
 export * from "./lib/Util/ReplyOptions.js";
 export * from "./lib/Util/Utils.js";
+export * from "./lib/ClientApplication.js";
 
 export {
   verifyKey,
