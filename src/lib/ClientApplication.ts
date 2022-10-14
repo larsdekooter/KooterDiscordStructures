@@ -38,7 +38,7 @@ export class ClientApplication {
     this.botPublic = data.bot_public;
     this.termsOfServiceURL = data.terms_of_service_url;
     this.privacyPolicyURL = data.privacy_policy_url;
-    this.owner = new User(data.owner, this.client);
+    this.owner = new User(data.owner ?? {}, this.client);
     this.team = data.team;
     this.verifyKey = data.verify_key;
     this.flags = data.flags;
