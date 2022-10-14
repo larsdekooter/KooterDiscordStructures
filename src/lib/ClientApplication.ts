@@ -4,8 +4,8 @@ import {
   ApplicationFlags,
   Routes,
 } from "discord-api-types/v10";
-import { Client } from "./Client";
-import { User } from "./User";
+import { Client } from "./Client.js";
+import { User } from "./User.js";
 
 export class ClientApplication {
   id: string;
