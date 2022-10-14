@@ -11,5 +11,3 @@ export interface ClientEvents {
   channelUpdate: [oldChannel: Channel | undefined, newChannel: Channel];
   interactionCreate: [interaction: Interaction];
 }
-
-export type Awaitable<T> = T | PromiseLike<T>;

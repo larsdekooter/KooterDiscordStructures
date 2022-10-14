@@ -71,8 +71,14 @@ export {
   InteractionResponseType,
   InteractionResponseFlags,
 } from "discord-interactions";
-export * from "@discordjs/rest";
+import * as Rest from "@discordjs/rest";
+export const discord_js_rest = Rest;
+
 export * from "discord-api-types/v10";
 export * from "discord-api-types/globals";
 export * from "@discordjs/builders";
-export * from "@discordjs/collection";
+export {
+  Collection,
+  CollectionConstructor,
+  Comparator,
+} from "@discordjs/collection";
