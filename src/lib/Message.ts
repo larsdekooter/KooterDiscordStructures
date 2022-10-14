@@ -117,20 +117,29 @@ export class Message {
 
     this.thread = data.thread ? new ThreadChannel(data.thread, client) : null;
 
-    this.components = data.components.map(
-      (row: any) =>
+    this.components = data.components.map((row: any) => {
+      try {
         new ActionRowBuilder({
           components: row.components.map((comp: any) => {
             if (comp.type === ComponentType.Button) {
               return new ButtonBuilder(comp);
             } else if (comp.type === SelectMenuBuilder) {
-              return new ButtonBuilder(comp);
+              return new SelectMenuBuilder(comp);
             } else {
               return comp;
             }
           }),
-        })
-    );
+        });
+      } catch (e) {
+        if (
+          e.message.startsWith(
+            "Error: Cannot properly serialize component type:"
+          )
+        ) {
+          console.warn("Unknown Component Type");
+        }
+      }
+    });
     /**
      * @type {MessageStickers?}
      */
