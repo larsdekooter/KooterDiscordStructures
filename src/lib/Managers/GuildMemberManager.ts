@@ -49,7 +49,7 @@ export class GuildMemberManager extends Manager<string, Member> {
   async edit(member: Member, data: EditMemberOptions) {
     const id = member.id;
     const returnData: APIEditMemberOptions = {};
-    returnData.roles &&= data.roles?.map((role: any) =>
+    returnData.roles = data.roles?.map((role: any) =>
       role instanceof Role ? role.id : role
     );
     returnData.nick = data.nick;

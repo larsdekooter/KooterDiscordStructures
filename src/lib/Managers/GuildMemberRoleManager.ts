@@ -62,9 +62,7 @@ export class GuildMemberRoleManager extends Manager<string, Role> {
       roles = roles.filter((role) => !roleIds.includes(role.id));
     } else {
       let id = typeof roleOrRoles === "string" ? roleOrRoles : roleOrRoles.id;
-      roles = roles.filter(
-        (role) => role.id !== (typeof role === "string" ? role : role.id)
-      );
+      roles = roles.filter((role) => role.id !== id);
     }
 
     return this.set(roles);
