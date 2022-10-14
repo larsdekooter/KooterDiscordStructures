@@ -7,6 +7,7 @@ import { Guild } from "../Guild.js";
 import { Member } from "../Member.js";
 import { Role } from "../Role.js";
 import { Manager } from "./Manager.js";
+import { EditMemberOptions } from "../Util/Options.js";
 
 export class GuildMemberManager extends Manager<string, Member> {
   guild: Guild;
@@ -45,15 +46,21 @@ export class GuildMemberManager extends Manager<string, Member> {
       );
     }
   }
-  async edit(member: Member, data: any) {
+  async edit(member: Member, data: EditMemberOptions) {
     const id = member.id;
-    data.roles &&= data.roles.map((role: any) =>
+    const returnData: APIEditMemberOptions = {};
+    returnData.roles &&= data.roles?.map((role: any) =>
       role instanceof Role ? role.id : role
     );
+    returnData.nick = data.nick;
+    returnData.mute = data.mute;
+    returnData.deaf = data.deaf;
+    returnData.channel_id = data.channelId;
+    returnData.communication_disabled_until = data.communicationDisabledUntil;
 
     const updatedMember = new Member(
       await this.client.rest.patch(Routes.guildMember(this.guild.id, id), {
-        body: data,
+        body: returnData,
       }),
       this.guild
     );
@@ -69,3 +76,12 @@ export class GuildMemberManager extends Manager<string, Member> {
     this.cache.set(data.id, data);
   }
 }
+
+type APIEditMemberOptions = {
+  nick?: string | null;
+  roles?: Role[] | string[];
+  mute?: boolean;
+  deaf?: boolean | null;
+  channel_id?: string | null;
+  communication_disabled_until?: Date | number | string | null;
+};

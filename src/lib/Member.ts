@@ -1,5 +1,5 @@
 import { PermissionFlagsBits, Routes } from "discord-api-types/v10";
-import { BanOptions } from "./Util/Options.js";
+import { BanOptions, EditMemberOptions } from "./Util/Options.js";
 import { Client } from "./Client.js";
 import { Guild } from "./Guild.js";
 import { GuildMemberRoleManager } from "./Managers/GuildMemberRoleManager.js";
@@ -54,7 +54,7 @@ export class Member {
   toString(): `<@${string}>` {
     return `<@${this.id}>`;
   }
-  edit(data: any) {
+  edit(data: EditMemberOptions) {
     return this.guild.members.edit(this, data);
   }
   get permissions() {

@@ -4,7 +4,7 @@
   "main": "dist/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "pub": "tsc && npm version patch && npm publish"
+    "build": "tsc && npm version patch && npm publish"
   },
   "keywords": [],
   "author": "",

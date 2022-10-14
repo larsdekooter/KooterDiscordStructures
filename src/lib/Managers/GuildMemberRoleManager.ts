@@ -20,7 +20,7 @@ export class GuildMemberRoleManager extends Manager<string, Role> {
         this.cache
       );
   }
-  set(roles: Role[]) {
+  set(roles: Role[] | string[]) {
     return this.member.edit({ roles });
   }
   get highest() {
@@ -35,27 +35,36 @@ export class GuildMemberRoleManager extends Manager<string, Role> {
     }
     return role1.position - role2.position;
   }
-  add(roleOrRoles: Role | Role[] | Collection<string, Role>) {
-    const roles = this.cache.toJSON();
+  add(
+    roleOrRoles: Role | Role[] | Collection<string, Role> | string[] | string
+  ) {
+    const roles = this.cache.map((role) => role.id);
     if (Array.isArray(roleOrRoles) || roleOrRoles instanceof Collection) {
       for (const role of roleOrRoles.values()) {
-        roles.push(role);
+        roles.push(typeof role === "string" ? role : role.id);
       }
     } else {
-      roles.push(roleOrRoles);
+      roles.push(
+        typeof roleOrRoles === "string" ? roleOrRoles : roleOrRoles.id
+      );
     }
     return this.set(roles);
   }
-  remove(roleOrRoles: Role | Role[] | Collection<string, Role>) {
+  remove(
+    roleOrRoles: Role | Role[] | Collection<string, Role> | string[] | string
+  ) {
     let roles = this.cache.toJSON();
     const roleIds: string[] = [];
     if (Array.isArray(roleOrRoles) || roleOrRoles instanceof Collection) {
       for (const role of roleOrRoles.values()) {
-        roleIds.push(role.id);
+        roleIds.push(typeof role === "string" ? role : role.id);
       }
       roles = roles.filter((role) => !roleIds.includes(role.id));
     } else {
-      roles = roles.filter((role) => role.id !== roleOrRoles.id);
+      let id = typeof roleOrRoles === "string" ? roleOrRoles : roleOrRoles.id;
+      roles = roles.filter(
+        (role) => role.id !== (typeof role === "string" ? role : role.id)
+      );
     }
 
     return this.set(roles);

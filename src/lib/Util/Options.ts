@@ -1,4 +1,5 @@
 import { ChannelType } from "discord-api-types/v10";
+import { Role } from "../Role";
 
 export type BanOptions = {
   deleteMessageSeconds?: number;
@@ -36,4 +37,13 @@ export type MessageFetchOptions = {
   before?: string;
   after?: string;
   around?: string;
+};
+
+export type EditMemberOptions = {
+  nick?: string | null;
+  roles?: Role[] | string[];
+  mute?: boolean;
+  deaf?: boolean | null;
+  channelId?: string | null;
+  communicationDisabledUntil?: Date | number | string | null;
 };
