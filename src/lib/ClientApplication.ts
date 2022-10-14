@@ -25,7 +25,7 @@ export class ClientApplication {
   verifyKey: string;
   flags: ApplicationFlags;
   client: Client;
-  constructor(data: APIApplication = {}, client: Client) {
+  constructor(data: APIApplication = {} as APIApplication, client: Client) {
     this.client = client;
     this._patch(data);
   }
