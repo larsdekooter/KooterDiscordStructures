@@ -47,3 +47,13 @@ export type EditMemberOptions = {
   channelId?: string | null;
   communicationDisabledUntil?: Date | number | string | null;
 };
+
+export type EmojiFetchOptions = {
+  id?: string;
+  force?: boolean;
+};
+
+export type RoleFetchOptions = {
+  id?: string;
+  force?: boolean;
+};

@@ -10,6 +10,7 @@ import { Emoji } from "./Emoji.js";
 import { GuildChannel } from "./GuildChannel.js";
 import { GuildBanManager } from "./Managers/GuildBanManager.js";
 import { GuildChannelManager } from "./Managers/GuildChannelManager.js";
+import { GuildEmojiManager } from "./Managers/GuildEmojiManager.js";
 import { GuildMemberManager } from "./Managers/GuildMemberManager.js";
 import { GuildRoleManager } from "./Managers/GuildRoleManager.js";
 import { PartialGuild } from "./PartialGuild.js";
@@ -33,7 +34,7 @@ export class Guild {
   explicitContentFilter: string;
   #roles: any[];
   #emojis: APIEmoji[];
-  emojis: Collection<string, Emoji>;
+  // emojis: Collection<string, Emoji>;
   features: string[];
   mfaLevel: number;
   applicationId?: string;
@@ -60,6 +61,7 @@ export class Guild {
   afkChannelId?: string;
   channels: GuildChannelManager;
   bans: GuildBanManager;
+  emojis: GuildEmojiManager;
   constructor(data: any, client: Client) {
     this.id = data.id;
     this.client = client;
@@ -94,12 +96,7 @@ export class Guild {
     this.roles = new GuildRoleManager(this.client, this, this.#roles);
 
     this.#emojis = data.emojis;
-    this.emojis = this.#emojis
-      .map((emoji) => new Emoji(emoji, this))
-      .reduce(
-        (coll: Collection<string, Emoji>, em) => coll.set(em.id, em),
-        new Collection<string, Emoji>()
-      );
+    this.emojis = new GuildEmojiManager(this.client, this.id, this.#emojis);
 
     this.features = data.features;
 
