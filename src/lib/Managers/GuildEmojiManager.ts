@@ -1,5 +1,5 @@
 import { Collection } from "@discordjs/collection";
-import { APIEmoji, Routes } from "discord-api-types/v10.js";
+import { APIEmoji, Routes } from "discord-api-types/v10";
 import { Client } from "../Client.js";
 import { Emoji } from "../Emoji.js";
 import { Guild } from "../Guild.js";
