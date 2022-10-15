@@ -70,6 +70,7 @@ export class BitField {
       //@ts-ignore
       serialized[flag] = this.has(bit, ...hasParams);
     }
+    return serialized;
   }
 
   toArray(...hasParams: any[]) {
