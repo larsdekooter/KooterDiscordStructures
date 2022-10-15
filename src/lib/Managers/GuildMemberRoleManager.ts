@@ -1,8 +1,10 @@
 import { Collection } from "@discordjs/collection";
+import { APIRole, Routes } from "discord-api-types/v10.js";
 import { Client } from "../Client.js";
 import { Guild } from "../Guild.js";
 import { Member } from "../Member.js";
 import { Role } from "../Role.js";
+import { RoleFetchOptions } from "../Util/Options.js";
 import { Manager } from "./Manager.js";
 
 export class GuildMemberRoleManager extends Manager<string, Role> {
@@ -69,5 +71,32 @@ export class GuildMemberRoleManager extends Manager<string, Role> {
   }
   private _add(data: Role) {
     this.cache.set(data.id, data);
+  }
+  async fetch({ id, force }: RoleFetchOptions) {
+    if (id && force) {
+      const role = new Role(
+        await this.client.rest.get(Routes.guildRole(this.guild.id, id)),
+        this.guild
+      );
+      this._add(role);
+      return role;
+    } else if (!id) {
+      return (
+        (await this.client.rest.get(
+          Routes.guildRoles(this.guild.id)
+        )) as APIRole[]
+      )
+        .map((role) => new Role(role, this.guild))
+        .reduce((coll, dat) => coll.set(dat.id, dat), this.cache)
+        .filter((role) => this.member._roles.includes(role.id));
+    } else if (this.cache.get(id)) return this.cache.get(id) ?? null;
+    else {
+      const role = new Role(
+        await this.client.rest.get(Routes.guildRole(this.guild.id, id)),
+        this.guild
+      );
+      this._add(role);
+      return role;
+    }
   }
 }
