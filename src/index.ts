@@ -51,6 +51,7 @@ export * from "./lib/UserContextMenuCommandInteraction.js";
 export * from "./lib/UserContextMenuCommandInteractionOptionResolver.js";
 export * from "./lib/VoiceChannel.js";
 export * from "./lib/Webhook.js";
+export * from "./lib/IntentsBitField.js";
 
 export * from "./lib/Util/Array.js";
 export * from "./lib/Util/Channel.js";
