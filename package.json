@@ -1,6 +1,6 @@
 {
   "name": "kooterdiscordstructures",
-  "version": "1.5.29",
+  "version": "1.5.30",
   "main": "dist/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
