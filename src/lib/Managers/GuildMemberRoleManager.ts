@@ -1,5 +1,5 @@
 import { Collection } from "@discordjs/collection";
-import { APIRole, Routes } from "discord-api-types/v10.js";
+import { APIRole, Routes } from "discord-api-types/v10";
 import { Client } from "../Client.js";
 import { Guild } from "../Guild.js";
 import { Member } from "../Member.js";
