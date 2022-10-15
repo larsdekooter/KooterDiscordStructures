@@ -38,7 +38,10 @@ export class User {
     return `${this.username}#${this.discriminator}`;
   }
   avatarURL() {
-    return this.client.rest.cdn.avatar(this.id, this.avatar);
+    if (this.avatar) {
+      return this.client.rest.cdn.avatar(this.id, this.avatar);
+    }
+    return null;
   }
   toString() {
     return `<@${this.id}>`;
