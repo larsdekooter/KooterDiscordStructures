@@ -18,14 +18,18 @@ export class GuildMemberManager extends Manager<string, Member> {
   get me() {
     return this.cache.get(this.client.id as string);
   }
-  async fetch(id?: string): Promise<Member | Collection<string, Member>> {
-    if (id) {
+  async fetch<I extends string | any>(
+    id?: I
+  ): Promise<I extends string ? Member : Collection<string, Member>> {
+    if (id != undefined && id != null) {
       const member = new Member(
-        await this.client.rest.get(Routes.guildMember(this.guild.id, id)),
+        await this.client.rest.get(
+          Routes.guildMember(this.guild.id, id as unknown as string)
+        ),
         this.guild
       );
       this._add(member);
-      return member;
+      return member as any;
     } else {
       const members = (await this.client.rest.get(
         Routes.guildMembers(this.guild.id),
