@@ -20,20 +20,6 @@ import { RawFile } from "@discordjs/rest";
 export class RepliableInteraction extends Interaction {
   async reply(options: ReplyOptions | string): Promise<Message | undefined> {
     if (typeof options === "string") options = { content: options };
-    if ("embeds" in options) {
-      options.embeds = options.embeds!.map((embed) => {
-        embed.setFooter({
-          text: embed.data.footer
-            ? `${embed.data.footer.text} \u2022 EftelBot \u2022${
-                Date.now() - this.createdTimestamp
-              }ms`
-            : `${Date.now() - this.createdTimestamp}ms`,
-          iconURL: "https://eftelbot.kooterman.repl.co/20220508_132216.png",
-        });
-        return embed;
-      });
-    }
-
     options.ephemeral
       ? (options.flags = InteractionResponseFlags.EPHEMERAL)
       : undefined;
@@ -106,32 +92,6 @@ export class RepliableInteraction extends Interaction {
   async editReply(options: ReplyOptions) {
     if (!this.replied && !this.deferred)
       throw new Error("This interaction has not been replied or deferred");
-    if ("embeds" in options) {
-      options.embeds = options.embeds!.map((embed) => {
-        if (embed instanceof EmbedBuilder) {
-          embed.setFooter({
-            text: embed.data.footer
-              ? `${embed.data.footer.text} \u2022 EftelBot \u2022 ${
-                  Date.now() - this.createdTimestamp
-                }ms`
-              : `\u2022 ${Date.now() - this.createdTimestamp}ms`,
-            iconURL: "https://eftelbot.kooterman.repl.co/20220508_132216.png",
-          });
-          return embed;
-        } else {
-          const embedBuilded = new EmbedBuilder(embed);
-          embedBuilded.setFooter({
-            text: embedBuilded.data.footer
-              ? `${embedBuilded.data.footer.text} \u2022 ${
-                  Date.now() - this.createdTimestamp
-                }ms`
-              : `${Date.now() - this.createdTimestamp}ms`,
-            iconURL: "https://eftelbot.kooterman.repl.co/20220508_132216.png",
-          });
-          return embed;
-        }
-      });
-    }
     await this.rest.patch(
       Routes.webhookMessage(this.applicationId, this.token),
       {
