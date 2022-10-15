@@ -32,7 +32,7 @@ export class Member {
 
     this._roles = data.roles;
 
-    this.joinedAt = data.joined_at;
+    this.joinedAt = new Date(data.joined_at);
 
     this.premiumSince = data.premium_since;
 
