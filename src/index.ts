@@ -1,3 +1,4 @@
+// Managers
 export * from "./lib/Managers/ChannelManager.js";
 export * from "./lib/Managers/ChannelMessageManager.js";
 export * from "./lib/Managers/GuildBanManager.js";
@@ -9,6 +10,7 @@ export * from "./lib/Managers/GuildRoleManager.js";
 export * from "./lib/Managers/Manager.js";
 export * from "./lib/Managers/UserManager.js";
 
+// Main Structures
 export * from "./lib/AttachmentBuilder.js";
 export * from "./lib/AutocompleteInteraction.js";
 export * from "./lib/BitField.js";
@@ -52,7 +54,10 @@ export * from "./lib/UserContextMenuCommandInteractionOptionResolver.js";
 export * from "./lib/VoiceChannel.js";
 export * from "./lib/Webhook.js";
 export * from "./lib/IntentsBitField.js";
+export * from "./lib/ClientApplication.js";
+export * from "./lib/Guildban.js";
 
+//Utils
 export * from "./lib/Util/Array.js";
 export * from "./lib/Util/Channel.js";
 export * from "./lib/Util/ClientEvents.js";
@@ -64,7 +69,6 @@ export * from "./lib/Util/OptionTypes.js";
 export * from "./lib/Util/Options.js";
 export * from "./lib/Util/ReplyOptions.js";
 export * from "./lib/Util/Utils.js";
-export * from "./lib/ClientApplication.js";
 
 export {
   verifyKey,

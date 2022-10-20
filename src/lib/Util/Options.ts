@@ -4,6 +4,7 @@ import { Role } from "../Role";
 export type BanOptions = {
   deleteMessageSeconds?: number;
   deleteMessageDays?: number;
+  reason?: string;
 };
 
 export type CreateChannelOptions = {
