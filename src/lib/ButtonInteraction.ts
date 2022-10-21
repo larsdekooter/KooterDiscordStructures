@@ -1,5 +1,14 @@
-import { ButtonBuilder } from "@discordjs/builders";
-import { ComponentType } from "discord-api-types/v10";
+import {
+  ActionRowBuilder,
+  ButtonBuilder,
+  RestOrArray,
+} from "@discordjs/builders";
+import {
+  APIActionRowComponentTypes,
+  APIMessageComponentEmoji,
+  ComponentType,
+} from "discord-api-types/v10";
+import { Button } from "./Button.js";
 import { Client } from "./Client.js";
 import { MessageComponentInteraction } from "./MessageComponentInteraction.js";
 import { Response } from "./Util/HTTPTypes.js";
@@ -18,10 +27,22 @@ export class ButtonInteraction extends MessageComponentInteraction {
     rows.forEach((row) => {
       row.components.forEach((component) => {
         if (component.data.type === ComponentType.Button) {
-          (component as ButtonBuilder).setDisabled(true);
+          return new ButtonBuilder()
+            .setDisabled(true)
+            .setStyle((component as Button).style)
+            .setLabel((component as Button).label as string)
+            .setEmoji((component as Button).emoji as APIMessageComponentEmoji)
+            .setCustomId((component as Button).cutomId)
+            .setURL((component as Button).url);
         }
       });
     });
-    return await this.message.edit({ components: rows });
+    return await this.message.edit({
+      components: rows.map((row) => {
+        return new ActionRowBuilder<ButtonBuilder>().addComponents(
+          row.components as unknown as ButtonBuilder[]
+        );
+      }),
+    });
   }
 }

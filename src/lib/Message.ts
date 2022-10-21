@@ -19,6 +19,9 @@ import { AttachmentBuilder } from "./AttachmentBuilder.js";
 import { ThreadChannel } from "./ThreadChannel.js";
 import { findChannelType } from "./Util/Channel.js";
 import { Guild } from "./Guild.js";
+import { ActionRow, APIMessageComponentTypes } from "./ActionRow.js";
+import { Button } from "./Button.js";
+import { SelectMenu } from "./SelectMenu.js";
 
 export class Message {
   id: string;
@@ -46,7 +49,7 @@ export class Message {
   flags?: number;
   referencedMessage: Message | null;
   thread: Channel | null;
-  components: ActionRowBuilder<SelectMenuBuilder | ButtonBuilder>[];
+  components: ActionRow<Button | SelectMenu>[];
   stickers?: Sticker[];
   client: Client;
   interaction?: MessageInteraction;
@@ -117,28 +120,8 @@ export class Message {
 
     this.thread = data.thread ? new ThreadChannel(data.thread, client) : null;
 
-    this.components = data.components.map((row: any) => {
-      try {
-        new ActionRowBuilder({
-          components: row.components.map((comp: any) => {
-            if (comp.type === ComponentType.Button) {
-              return new ButtonBuilder(comp);
-            } else if (comp.type === SelectMenuBuilder) {
-              return new SelectMenuBuilder(comp);
-            } else {
-              return comp;
-            }
-          }),
-        });
-      } catch (e) {
-        if (
-          e.message.startsWith(
-            "Error: Cannot properly serialize component type:"
-          )
-        ) {
-          console.warn("Unknown Component Type");
-        }
-      }
+    this.components = data.components.map((row: APIMessageComponentTypes[]) => {
+      return new ActionRow(row);
     });
     /**
      * @type {MessageStickers?}

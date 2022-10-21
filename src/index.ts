@@ -56,6 +56,10 @@ export * from "./lib/Webhook.js";
 export * from "./lib/IntentsBitField.js";
 export * from "./lib/ClientApplication.js";
 export * from "./lib/Guildban.js";
+export * from "./lib/Button.js";
+export * from "./lib/Component.js";
+export * from "./lib/SelectMenu.js";
+export * from "./lib/ActionRow.js";
 
 //Utils
 export * from "./lib/Util/Array.js";
