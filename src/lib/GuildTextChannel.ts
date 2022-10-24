@@ -141,7 +141,7 @@ export class GuildTextChannel extends GuildChannel {
 }
 
 function getContentType(name: string) {
-  return name.split(".").reverse()[0];
+  return `image/${name.split(".").reverse()[0]}`;
 }
 
 type MessageOptions = {
