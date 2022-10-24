@@ -22,11 +22,7 @@ export class ChannelManager extends Manager<string, Channel> {
         Routes.channel(id)
       )) as any;
       const channel = findChannelType(apiChannel, this.client);
-      this.client.emit(
-        "channelUpdate",
-        this.client.channels.cache.get(id),
-        channel
-      );
+
       this._add(channel);
       return channel;
     } else {
@@ -35,7 +31,6 @@ export class ChannelManager extends Manager<string, Channel> {
         Routes.channel(id)
       )) as any;
       const channel = findChannelType(apiChannel, this.client);
-      this.client.emit("channelUpdate", this.cache.get(id), channel);
       this._add(channel);
       return channel;
     }

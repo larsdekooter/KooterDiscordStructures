@@ -21,11 +21,7 @@ export class GuildChannelManager extends Manager<string, GuildChannel> {
         this.client
       );
       if (channel.guildId !== this.guild.id) return null;
-      this.client.emit(
-        "channelUpdate",
-        this.client.channels.cache.get(id),
-        channel
-      );
+
       this.cache.set(channel.id, channel);
       this.client.channels.cache.set(channel.id, channel);
       return channel;
@@ -40,11 +36,6 @@ export class GuildChannelManager extends Manager<string, GuildChannel> {
         this.cache
       );
       channels.forEach((channel) => {
-        this.client.emit(
-          "channelUpdate",
-          this.client.channels.cache.get(channel.id),
-          channel
-        );
         this.client.channels.cache.set(channel.id, channel);
       });
       return channels;
@@ -55,11 +46,7 @@ export class GuildChannelManager extends Manager<string, GuildChannel> {
         this.client
       );
       this.cache.set(channel.id, channel);
-      this.client.emit(
-        "channelUpdate",
-        this.client.channels.cache.get(id),
-        channel
-      );
+
       this.client.channels.cache.set(channel.id, channel);
       return channel;
     } else if (!id && !force) {

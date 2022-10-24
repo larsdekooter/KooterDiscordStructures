@@ -11,7 +11,6 @@ export class GuildManager extends Manager<string, Guild> {
         this.client
       );
       this._add(guild);
-      this.client.emit("guildUpdate", oldGuild, guild);
       return guild;
     } else {
       if (this.cache.has(id)) return this.cache.get(id) ?? null;
@@ -20,7 +19,6 @@ export class GuildManager extends Manager<string, Guild> {
         this.client
       );
       this._add(guild);
-      this.client.emit("guildUpdate", oldGuild, guild);
       return guild;
     }
   }

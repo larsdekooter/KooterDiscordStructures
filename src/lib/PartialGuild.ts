@@ -43,7 +43,6 @@ export class PartialGuild {
 
     const guild = new Guild(apiGuild, this.client);
     this.client.guilds.cache.set(guild.id, guild);
-    this.client.emit("guildUpdate", this, guild);
     return guild;
   }
   get partial() {
