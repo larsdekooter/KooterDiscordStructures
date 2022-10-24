@@ -8,6 +8,7 @@ import {
 import {
   APIMessageComponentEmoji,
   InteractionResponseType,
+  Routes,
 } from "discord-api-types/v10";
 import { ReplyOptions } from "./Util/ReplyOptions.js";
 import { Message } from "./Message.js";
@@ -28,13 +29,34 @@ export class MessageComponentInteraction extends RepliableInteraction {
 
   async deferUpdate() {
     if (this.replied || this.deferred) throw new Error("Already Replied");
-    await this.res.send({
-      type: InteractionResponseType.DeferredMessageUpdate,
-      data: undefined,
-    });
+    await this.client.rest.post(
+      Routes.interactionCallback(this.id, this.token),
+      {
+        body: {
+          type: InteractionResponseType.DeferredMessageUpdate,
+          data: undefined,
+        },
+        auth: false,
+      }
+    );
     this.replied = true;
   }
 
+  async update(options: ReplyOptions) {
+    if (this.replied || this.deferred) throw new Error("Already Replied!");
+    await this.client.rest.post(
+      Routes.interactionCallback(this.id, this.token),
+      {
+        body: {
+          data: options,
+          type: InteractionResponseType.UpdateMessage,
+        },
+        auth: false,
+      }
+    );
+    this.replied = true;
+    return options.fetchReply ? this.fetchReply() : undefined;
+  }
   async disableComponents() {
     const rows = this.message.components;
     rows.forEach((row) => {
@@ -64,14 +86,5 @@ export class MessageComponentInteraction extends RepliableInteraction {
         ButtonBuilder | SelectMenuBuilder
       >[],
     });
-  }
-  async update(options: ReplyOptions) {
-    if (this.replied || this.deferred) throw new Error("Already Replied!");
-    await this.res.send({
-      data: options,
-      type: InteractionResponseType.UpdateMessage,
-    });
-    this.replied = true;
-    return options.fetchReply ? this.fetchReply() : undefined;
   }
 }

@@ -25,10 +25,16 @@ export class RepliableInteraction extends Interaction {
       : undefined;
     if (this.replied || this.deferred)
       throw new Error("Already replied to this interaction");
-    await this.res.send({
-      type: InteractionResponseType.ChannelMessageWithSource,
-      data: options,
-    });
+    await this.client.rest.post(
+      Routes.interactionCallback(this.id, this.token),
+      {
+        body: {
+          data: options,
+          type: InteractionResponseType.ChannelMessageWithSource,
+        },
+        auth: false,
+      }
+    );
     this.replied = true;
     return options.fetchReply
       ? new Message(
@@ -42,12 +48,20 @@ export class RepliableInteraction extends Interaction {
   async deferReply(options = { ephemeral: false }) {
     if (this.replied || this.deferred)
       throw new Error("Already replied to this interaction");
-    await this.res.send({
-      type: InteractionResponseType.DeferredChannelMessageWithSource,
-      data: {
-        flags: options.ephemeral ? InteractionResponseFlags.EPHEMERAL : null,
-      },
-    });
+    await this.client.rest.post(
+      Routes.interactionCallback(this.id, this.token),
+      {
+        body: {
+          type: InteractionResponseType.DeferredChannelMessageWithSource,
+          data: {
+            flags: options.ephemeral
+              ? InteractionResponseFlags.EPHEMERAL
+              : null,
+          },
+        },
+        auth: false,
+      }
+    );
     this.deferred = true;
   }
   async followUp(options: FollowUpOptions | string) {
@@ -83,10 +97,16 @@ export class RepliableInteraction extends Interaction {
   async showModal(modal: ModalBuilder) {
     if (this.replied || this.deferred)
       throw new Error("Already replied to this interaction!");
-    await this.res.send({
-      type: InteractionResponseType.Modal,
-      data: modal,
-    });
+    await this.client.rest.post(
+      Routes.interactionCallback(this.id, this.token),
+      {
+        body: {
+          type: InteractionResponseType.Modal,
+          data: modal,
+        },
+        auth: false,
+      }
+    );
     this.replied = true;
   }
   async editReply(options: ReplyOptions) {

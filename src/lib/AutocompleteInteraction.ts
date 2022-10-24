@@ -3,6 +3,7 @@ import {
   ApplicationCommandOptionType,
   InteractionResponseType,
   LocalizationMap,
+  Routes,
 } from "discord-api-types/v10";
 import { Client } from "./Client.js";
 import { Interaction } from "./Interaction.js";
@@ -48,12 +49,18 @@ export class AutocompleteInteraction extends Interaction {
       value: item.value,
       name_Localizations: item.nameLocalizations,
     }));
-    this.res.send({
-      data: {
-        choises,
-      },
-      type: InteractionResponseType.ApplicationCommandAutocompleteResult,
-    });
+    await this.client.rest.post(
+      Routes.interactionCallback(this.id, this.token),
+      {
+        body: {
+          type: InteractionResponseType.ApplicationCommandAutocompleteResult,
+          data: {
+            choices: choises,
+          },
+        },
+        auth: false,
+      }
+    );
     this.responded = true;
   }
   getFocused() {

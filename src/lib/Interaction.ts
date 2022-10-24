@@ -163,4 +163,8 @@ export class Interaction {
     if (!channel?.isTextBased()) return null;
     return channel ?? null;
   }
+  end() {
+    this.client.emit("debug", `Interaction (${this.id}) ended`);
+    this.res.end();
+  }
 }
