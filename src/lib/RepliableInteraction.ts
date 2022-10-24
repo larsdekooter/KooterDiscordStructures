@@ -16,6 +16,7 @@ import { Message } from "./Message.js";
 import { ModalCollector } from "./ModalCollector.js";
 import { ModalSubmitInteraction } from "./ModalSubmitInteraction.js";
 import { RawFile } from "@discordjs/rest";
+import { resolveFiles } from "./Util/Utils.js";
 
 export class RepliableInteraction extends Interaction {
   async reply(options: ReplyOptions | string): Promise<Message | undefined> {
@@ -72,20 +73,10 @@ export class RepliableInteraction extends Interaction {
       ? (options.flags = InteractionResponseFlags.EPHEMERAL)
       : null;
     let files: RawFile[] | undefined;
-
-    files = options.files?.map((file) => {
-      if (typeof file !== "string") {
-        return {
-          data: file.attachment,
-          name: file.name,
-          description: file.description,
-        } as RawFile;
-      } else {
-        return {
-          data: file,
-        } as RawFile;
-      }
-    });
+    files = await Promise.all<RawFile[] | undefined>(
+      //@ts-ignore
+      options.files?.map(async (file) => await resolveFiles(file, file.name))
+    );
     return new Message(
       await this.rest.post(`/webhooks/${this.applicationId}/${this.token}`, {
         files,

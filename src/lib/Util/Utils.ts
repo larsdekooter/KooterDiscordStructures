@@ -5,6 +5,7 @@ import fetch from "node-fetch";
 import path from "path";
 import fs from "fs";
 import { Snowflake } from "discord-api-types/globals";
+import { RawFile } from "@discordjs/rest";
 const isObject = (d: any) => typeof d === "object" && d !== null;
 
 function flattenFunc(obj: any, ...props: any[]) {
@@ -74,14 +75,14 @@ export const resolveFiles = async (
   resource: BufferResolvable | Stream,
   name = "unknown.png",
   description: string | undefined = "description"
-): Promise<ResolvedFile> => {
-  if (Buffer.isBuffer(resource)) return { data: resource, name, description };
+): Promise<RawFile> => {
+  if (Buffer.isBuffer(resource)) return { data: resource, name };
   //@ts-ignore
   if (typeof resource[Symbol.asyncIterator] === "function") {
     const buffers = [];
     //@ts-ignore
     for (const data of resource) buffers.push(Buffer.from(data));
-    return { data: Buffer.concat(buffers), name, description };
+    return { data: Buffer.concat(buffers), name };
   }
 
   if (typeof resource === "string") {
@@ -91,13 +92,12 @@ export const resolveFiles = async (
         data: Buffer.from(await res.arrayBuffer()),
         contentType: res.headers.get("content-type") ?? undefined,
         name,
-        description,
       };
     }
 
     const file = path.resolve(resource);
 
-    return { data: fs.readFileSync(file), name, description };
+    return { data: fs.readFileSync(file), name };
   }
   throw new Error("Typ incorrect");
 };
