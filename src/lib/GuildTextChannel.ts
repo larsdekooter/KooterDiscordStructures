@@ -17,6 +17,7 @@ import {
 import { AttachmentBuilder } from "./AttachmentBuilder";
 import { Client } from "./Client.js";
 import { ChannelWebhookManager } from "./Managers/ChannelWebhookManager.js";
+import { RawFile } from "@discordjs/rest";
 
 export class GuildTextChannel extends GuildChannel {
   defaultAutoArchiveDuration: ThreadAutoArchiveDuration;
@@ -113,9 +114,23 @@ export class GuildTextChannel extends GuildChannel {
   async send(options: MessageOptions | string) {
     options =
       typeof options === "string" ? (options = { content: options }) : options;
+    let files: RawFile[] | undefined = options.files?.map((file) => {
+      if (typeof file !== "string") {
+        return {
+          data: file.attachment,
+          name: file.name,
+          description: file.description,
+        } as RawFile;
+      } else {
+        return {
+          data: file,
+        } as RawFile;
+      }
+    });
     const message = new Message(
       await this.client.rest.post(Routes.channelMessages(this.id), {
         body: options,
+        files,
       }),
       this.client
     );
