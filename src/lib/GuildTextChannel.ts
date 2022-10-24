@@ -120,6 +120,7 @@ export class GuildTextChannel extends GuildChannel {
           data: file.attachment,
           name: file.name,
           description: file.description,
+          contentType: getContentType(file.name),
         } as RawFile;
       } else {
         return {
@@ -137,6 +138,10 @@ export class GuildTextChannel extends GuildChannel {
     this.messages.cache.set(message.id, message);
     return message;
   }
+}
+
+function getContentType(name: string) {
+  return name.split(".").reverse()[0];
 }
 
 type MessageOptions = {
