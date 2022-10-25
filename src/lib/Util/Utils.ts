@@ -63,7 +63,7 @@ function flattenFunc(obj: any, ...props: any[]) {
   return out;
 }
 
-function basenameFunc(path: any, ext: any) {
+function basenameFunc(path?: any, ext?: any) {
   const res = parse(path);
   return ext && res.ext.startsWith(ext) ? res.name : res.base.split("?")[0];
 }
