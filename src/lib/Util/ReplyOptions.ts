@@ -20,6 +20,7 @@ export type ReplyOptions = {
   };
   fetchReply?: boolean;
   flags?: number;
+  files?: AttachmentBuilder[] | string[];
 };
 
 export type FollowUpOptions = {

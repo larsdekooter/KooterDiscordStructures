@@ -17,15 +17,19 @@ import { ModalCollector } from "./ModalCollector.js";
 import { ModalSubmitInteraction } from "./ModalSubmitInteraction.js";
 import { RawFile } from "@discordjs/rest";
 import { resolveFiles } from "./Util/Utils.js";
+import { MessagePayload } from "./MessagePayload.js";
 
 export class RepliableInteraction extends Interaction {
   async reply(options: ReplyOptions | string): Promise<Message | undefined> {
+    if (this.replied || this.deferred)
+      throw new Error("Already replied to this interaction");
     if (typeof options === "string") options = { content: options };
     options.ephemeral
       ? (options.flags = InteractionResponseFlags.EPHEMERAL)
       : undefined;
-    if (this.replied || this.deferred)
-      throw new Error("Already replied to this interaction");
+    const files = await new MessagePayload({
+      files: options.files,
+    }).resolveFiles();
     await this.client.rest.post(
       Routes.interactionCallback(this.id, this.token),
       {
@@ -34,6 +38,7 @@ export class RepliableInteraction extends Interaction {
           type: InteractionResponseType.ChannelMessageWithSource,
         },
         auth: false,
+        files,
       }
     );
     this.replied = true;
@@ -73,10 +78,7 @@ export class RepliableInteraction extends Interaction {
       ? (options.flags = InteractionResponseFlags.EPHEMERAL)
       : null;
     let files: RawFile[] | undefined;
-    files = await Promise.all<RawFile[] | undefined>(
-      //@ts-ignore
-      options.files?.map(async (file) => await resolveFiles(file, file.name))
-    );
+    files = await new MessagePayload({ files: options.files }).resolveFiles();
     return new Message(
       await this.rest.post(`/webhooks/${this.applicationId}/${this.token}`, {
         files,
@@ -100,13 +102,17 @@ export class RepliableInteraction extends Interaction {
     );
     this.replied = true;
   }
-  async editReply(options: ReplyOptions) {
+  async editReply(options: FollowUpOptions) {
     if (!this.replied && !this.deferred)
       throw new Error("This interaction has not been replied or deferred");
+    const files = await new MessagePayload({
+      files: options.files,
+    }).resolveFiles();
     await this.rest.patch(
       Routes.webhookMessage(this.applicationId, this.token),
       {
         body: options,
+        files,
       }
     );
   }
