@@ -3,7 +3,14 @@ import { APIMessage } from "discord-api-types/v10";
 import { basename } from "./Util/Utils.js";
 import { DataResolver } from "./DataResolver.js";
 import { Stream } from "stream";
-import { JSONEncodable } from "@discordjs/builders";
+import {
+  ActionRowBuilder,
+  ButtonBuilder,
+  EmbedBuilder,
+  JSONEncodable,
+  SelectMenuBuilder,
+} from "@discordjs/builders";
+import { AttachmentBuilder } from "./AttachmentBuilder.js";
 
 type BufferResolvable = Buffer | string;
 interface AttachmentPayload {
@@ -12,21 +19,27 @@ interface AttachmentPayload {
   description?: string;
 }
 
+type MessageCreateOptions = {
+  content?: string;
+  tts?: boolean;
+  embeds?: EmbedBuilder[] | Object[];
+  components?: ActionRowBuilder<ButtonBuilder | SelectMenuBuilder>[];
+  files?: AttachmentBuilder[] | string[];
+};
 export class MessagePayload {
-  target;
-  options;
-  body: APIMessage | null;
-  files?: RawFile[] | null;
-  constructor(target, options) {
-    this.target = target;
+  options: MessageCreateOptions | string;
+  body: any | null;
+  files?: RawFile[];
+  constructor(options: MessageCreateOptions | string) {
     this.options = options;
     this.body = null;
-    this.files = null;
+    this.files = undefined;
   }
   async resolveFiles(): Promise<RawFile[] | undefined> {
     if (this.files) return this.files;
 
     this.files = await Promise.all(
+      //@ts-ignore
       this.options.files?.map((file) =>
         (this.constructor as unknown as typeof MessagePayload).resolveFile(file)
       ) ?? []
@@ -67,5 +80,14 @@ export class MessagePayload {
 
     const { data, contentType } = await DataResolver.resolveFile(attachment);
     return { data, name, contentType };
+  }
+  async resolveBody() {
+    this.options =
+      typeof this.options === "string"
+        ? { content: this.options }
+        : this.options;
+    this.files = await this.resolveFiles();
+    this.body = this.options;
+    return this;
   }
 }

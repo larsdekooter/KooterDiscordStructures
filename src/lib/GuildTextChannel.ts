@@ -113,15 +113,10 @@ export class GuildTextChannel extends GuildChannel {
     }
   }
   async send(options: MessageOptions | string) {
-    options =
-      typeof options === "string" ? (options = { content: options }) : options;
-    let files: RawFile[] | undefined = await new MessagePayload(
-      {},
-      { files: options.files }
-    ).resolveFiles();
+    const { body, files } = await new MessagePayload(options).resolveBody();
     const message = new Message(
       await this.client.rest.post(Routes.channelMessages(this.id), {
-        body: options,
+        body,
         files,
       }),
       this.client

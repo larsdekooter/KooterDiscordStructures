@@ -1,6 +1,7 @@
 import path from "path";
 import fs from "fs/promises";
 import { Stream } from "stream";
+import fetch from "node-fetch";
 
 type BufferResolvable = Buffer | string;
 interface ResolvedFile {
@@ -25,7 +26,6 @@ export class DataResolver {
 
     if (typeof resource === "string") {
       if (/^https?:\/\//.test(resource)) {
-        console.log("url");
         const res = await fetch(resource);
         return {
           data: Buffer.from(await res.arrayBuffer()),
