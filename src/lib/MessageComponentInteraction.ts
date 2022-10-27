@@ -17,6 +17,7 @@ import { Response } from "./Util/HTTPTypes.js";
 import { Client } from "./Client.js";
 import { Button } from "./Button.js";
 import { SelectMenu } from "./SelectMenu.js";
+import { MessagePayload } from "./MessagePayload.js";
 
 export class MessageComponentInteraction extends RepliableInteraction {
   message: Message;
@@ -44,6 +45,9 @@ export class MessageComponentInteraction extends RepliableInteraction {
 
   async update(options: ReplyOptions) {
     if (this.replied || this.deferred) throw new Error("Already Replied!");
+    const files = await new MessagePayload({
+      files: options.files,
+    }).resolveFiles();
     await this.client.rest.post(
       Routes.interactionCallback(this.id, this.token),
       {
@@ -52,6 +56,7 @@ export class MessageComponentInteraction extends RepliableInteraction {
           type: InteractionResponseType.UpdateMessage,
         },
         auth: false,
+        files,
       }
     );
     this.replied = true;
