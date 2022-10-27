@@ -31,6 +31,7 @@ import { MessageContextMenuCommandInteraction } from "./MessageContextMenuComman
 import { UserContextMenuCommandInteraction } from "./UserContextMenuCommandInteraction.js";
 import EventEmitter from "events";
 import { ClientApplication } from "./ClientApplication.js";
+import { MessageComponentInteraction } from "./MessageComponentInteraction.js";
 
 export enum RESTResponseStatusCodes {
   RateLimit = 429,
@@ -82,7 +83,7 @@ export class Client extends EventEmitter {
         interactionOptions.route,
         verifyKeyMiddleware(interactionOptions.clientPublicKey),
         async (req, res) => {
-          let interaction;
+          let interaction: Interaction;
           switch (req.body.type) {
             case InteractionType.ApplicationCommand: {
               if (req.body.data.type === ApplicationCommandType.ChatInput) {
@@ -140,6 +141,16 @@ export class Client extends EventEmitter {
             interaction.member = new Member(
               interaction._member,
               interaction.guild
+            );
+          }
+          if (interaction.isMessageComponentInteraction()) {
+            this.collectors.forEach((collector) =>
+              collector.collect(interaction as MessageComponentInteraction)
+            );
+          }
+          if (interaction.isModalSubmit()) {
+            this.modalCollectors.forEach((collector) =>
+              collector.collect(interaction as ModalSubmitInteraction)
             );
           }
           this.emit("interactionCreate", interaction);
