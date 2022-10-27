@@ -3,6 +3,7 @@ import {
   AnyComponentBuilder,
   ButtonBuilder,
   ComponentBuilder,
+  ModalBuilder,
   SelectMenuBuilder,
 } from "@discordjs/builders";
 import {
@@ -10,7 +11,7 @@ import {
   InteractionResponseType,
   Routes,
 } from "discord-api-types/v10";
-import { ReplyOptions } from "./Util/ReplyOptions.js";
+import { AwaitModalSubmitOptions, ReplyOptions } from "./Util/ReplyOptions.js";
 import { Message } from "./Message.js";
 import { RepliableInteraction } from "./RepliableInteraction.js";
 import { Response } from "./Util/HTTPTypes.js";
@@ -18,6 +19,9 @@ import { Client } from "./Client.js";
 import { Button } from "./Button.js";
 import { SelectMenu } from "./SelectMenu.js";
 import { MessagePayload } from "./MessagePayload.js";
+import { ModalSubmitInteraction } from "./ModalSubmitInteraction.js";
+import { ModalCollector } from "./ModalCollector.js";
+import { Collection } from "@discordjs/collection";
 
 export class MessageComponentInteraction extends RepliableInteraction {
   message: Message;
@@ -91,5 +95,42 @@ export class MessageComponentInteraction extends RepliableInteraction {
         ButtonBuilder | SelectMenuBuilder
       >[],
     });
+  }
+  async awaitModalSubmit(
+    options: AwaitModalSubmitOptions
+  ): Promise<ModalSubmitInteraction> {
+    return new Promise((resolve, reject) => {
+      const collector = new ModalCollector(
+        options,
+        this.client,
+        this.channelId
+      );
+      collector.once(
+        "end",
+        (
+          collected: Collection<string, ModalSubmitInteraction>,
+          reason: string
+        ) => {
+          const interaction = collected.first();
+          if (interaction) resolve(interaction);
+          else reject(new Error("Collector ended with reason: " + reason));
+        }
+      );
+    });
+  }
+  async showModal(modal: ModalBuilder) {
+    if (this.replied || this.deferred)
+      throw new Error("Already replied to this interaction!");
+    await this.client.rest.post(
+      Routes.interactionCallback(this.id, this.token),
+      {
+        body: {
+          type: InteractionResponseType.Modal,
+          data: modal,
+        },
+        auth: false,
+      }
+    );
+    this.replied = true;
   }
 }

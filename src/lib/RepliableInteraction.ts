@@ -87,21 +87,7 @@ export class RepliableInteraction extends Interaction {
       this.client
     );
   }
-  async showModal(modal: ModalBuilder) {
-    if (this.replied || this.deferred)
-      throw new Error("Already replied to this interaction!");
-    await this.client.rest.post(
-      Routes.interactionCallback(this.id, this.token),
-      {
-        body: {
-          type: InteractionResponseType.Modal,
-          data: modal,
-        },
-        auth: false,
-      }
-    );
-    this.replied = true;
-  }
+
   async editReply(options: FollowUpOptions) {
     if (!this.replied && !this.deferred)
       throw new Error("This interaction has not been replied or deferred");
@@ -130,27 +116,5 @@ export class RepliableInteraction extends Interaction {
       )) as APIMessage,
       this.client
     );
-  }
-  async awaitModalSubmit(
-    options: AwaitModalSubmitOptions
-  ): Promise<ModalSubmitInteraction> {
-    return new Promise((resolve, reject) => {
-      const collector = new ModalCollector(
-        options,
-        this.client,
-        this.channelId
-      );
-      collector.once(
-        "end",
-        (
-          collected: Collection<string, ModalSubmitInteraction>,
-          reason: string
-        ) => {
-          const interaction = collected.first();
-          if (interaction) resolve(interaction);
-          else reject(new Error("Collector ended with reason: " + reason));
-        }
-      );
-    });
   }
 }
