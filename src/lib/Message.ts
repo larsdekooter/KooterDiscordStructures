@@ -22,6 +22,7 @@ import { Guild } from "./Guild.js";
 import { ActionRow, APIMessageComponentTypes } from "./ActionRow.js";
 import { Button } from "./Button.js";
 import { SelectMenu } from "./SelectMenu.js";
+import { MessageComponentInteraction } from "./MessageComponentInteraction.js";
 
 export class Message {
   id: string;
@@ -142,14 +143,29 @@ export class Message {
   createMessageComponentCollector(options: CollectorOptions) {
     return new Collector(options, this.client, { message: this });
   }
-  async awaitMessageComponents(options: CollectorOptions) {
+  async awaitMessageComponent(
+    options: CollectorOptions
+  ): Promise<MessageComponentInteraction> {
     return new Promise((resolve, reject) => {
-      const collector = new Collector(options, this.client, { message: this });
+      const collector = new Collector(
+        {
+          max: 1,
+          filter: options.filter,
+          type: options.type,
+          time: options.time,
+        },
+        this.client,
+        { message: this }
+      );
 
       collector.once(
         "end",
-        (collected: Collection<unknown, unknown>, reason: string) => {
-          if (collected.size > 0) resolve(collected);
+        (
+          collected: Collection<string, MessageComponentInteraction>,
+          reason: string
+        ) => {
+          if (collected.size > 0)
+            resolve(collected.at(0) as MessageComponentInteraction);
           else
             reject(
               new Error(

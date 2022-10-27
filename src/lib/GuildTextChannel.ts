@@ -50,10 +50,15 @@ export class GuildTextChannel extends GuildChannel {
     if (!this.lastMessageId) return null;
     return this.messages.cache.get(this.lastMessageId);
   }
-  awaitMessageComponents(options: CollectorOptions) {
+  awaitMessageComponent(options: CollectorOptions) {
     return new Promise<Collection<string, MessageComponentInteraction>>(
       (resolve, reject) => {
-        const collector = this.createMessageComponentCollector(options);
+        const collector = this.createMessageComponentCollector({
+          max: 1,
+          filter: options.filter,
+          type: options.type,
+          time: options.time,
+        });
 
         collector.on("end", (collected, reason) => {
           if (reason === "TIME_END") {
