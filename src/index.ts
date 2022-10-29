@@ -18,7 +18,6 @@ export * from "./lib/ButtonInteraction.js";
 export * from "./lib/Channel.js";
 export * from "./lib/Client.js";
 export * from "./lib/Collector.js";
-export * from "./lib/Command.js";
 export * from "./lib/ChatInputCommandInteraction.js";
 export * from "./lib/ChatInputCommandInteractionOptionResolver.js";
 export * from "./lib/Embed.js";
