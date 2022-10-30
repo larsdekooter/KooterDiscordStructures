@@ -79,6 +79,11 @@ export class GuildMemberManager extends Manager<string, Member> {
   private _add(data: Member) {
     this.cache.set(data.id, data);
   }
+  async fetchMe(force = false) {
+    if (this.cache.has(this.client.user.id))
+      return this.cache.get(this.client.user.id) as Member;
+    return this.fetch(this.client.user.id);
+  }
 }
 
 type APIEditMemberOptions = {

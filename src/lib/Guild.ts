@@ -169,7 +169,6 @@ export class Guild {
     }
     return false;
   }
-  async fetchMe() {}
   leave() {
     return this.client.user.leaveGuild(this.id);
   }
