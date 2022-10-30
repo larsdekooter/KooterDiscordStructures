@@ -171,4 +171,7 @@ export class Guild {
   fetchMe() {
     return this.members.fetch(this.client.id);
   }
+  leave() {
+    return this.client.user.leaveGuild(this.id);
+  }
 }

@@ -49,4 +49,7 @@ export class PartialGuild {
     if (this instanceof PartialGuild) return true;
     return false;
   }
+  leave() {
+    return this.client.user.leaveGuild(this.id);
+  }
 }

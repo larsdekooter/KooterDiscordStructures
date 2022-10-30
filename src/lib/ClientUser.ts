@@ -85,4 +85,8 @@ export class ClientUser {
     this.client.rest.setToken(data.token);
     return this._patch(data);
   }
+  async leaveGuild(id: string) {
+    await this.client.rest.delete(Routes.userGuild(id));
+    return this;
+  }
 }
