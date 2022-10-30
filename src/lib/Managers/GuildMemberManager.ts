@@ -16,7 +16,7 @@ export class GuildMemberManager extends Manager<string, Member> {
     this.guild = guild;
   }
   get me() {
-    return this.cache.get(this.client.id as string);
+    return this.cache.get(this.client.user.id as string);
   }
   async fetch<I extends string | any>(
     id?: I

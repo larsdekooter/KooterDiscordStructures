@@ -13,6 +13,7 @@ import { GuildChannelManager } from "./Managers/GuildChannelManager.js";
 import { GuildEmojiManager } from "./Managers/GuildEmojiManager.js";
 import { GuildMemberManager } from "./Managers/GuildMemberManager.js";
 import { GuildRoleManager } from "./Managers/GuildRoleManager.js";
+import { Member } from "./Member.js";
 import { PartialGuild } from "./PartialGuild.js";
 import { Sticker } from "./Sticker.js";
 
@@ -168,9 +169,7 @@ export class Guild {
     }
     return false;
   }
-  fetchMe() {
-    return this.members.fetch(this.client.id);
-  }
+  async fetchMe() {}
   leave() {
     return this.client.user.leaveGuild(this.id);
   }

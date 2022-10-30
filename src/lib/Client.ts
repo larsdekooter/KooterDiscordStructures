@@ -63,7 +63,6 @@ export class Client extends EventEmitter {
   app: Express;
   isReady = false;
   partialGuilds = new Collection<string, PartialGuild>();
-  id = process.env.id;
   token = process.env.token;
   messages = new Collection<string, Message>();
   users = new UserManager(this);
@@ -216,29 +215,16 @@ export class Client extends EventEmitter {
     this.emit("ready", this);
     return this;
   }
-  toString() {
-    return `${this.id}`;
-  }
   async setGuildCommands(clientId: string, guildId: string, commands: any[]) {
     if (!this.isReady)
       throw new Error("Client needs to be ready in order to use this");
-    await this.rest.put(Routes.applicationGuildCommands(clientId, guildId), {
-      body: commands,
-    });
-    this.emit("debug", `${Colors.green("[LOADED]: ")} Commands`);
-  }
-  async deleteCommands(prod = false) {
-    const guildId = prod ? "972418027066884116" : "950680035411501056";
-    if (!this.isReady)
-      throw new Error("Client has to be ready in order to use this");
-    const commands: any[] = [];
     await this.rest.put(
-      Routes.applicationGuildCommands(this.id as string, guildId),
+      Routes.applicationGuildCommands(this.user.id, guildId),
       {
         body: commands,
       }
     );
-    console.log(`${Colors.red("[DELETED]: ")} Commands`);
+    this.emit("debug", `${Colors.green("[LOADED]: ")} Commands`);
   }
   async loginWithoutFetching(token: string | undefined = process.env.token) {
     if (!token) throw new Error("If you log in, specify a token");

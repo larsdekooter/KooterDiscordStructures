@@ -69,8 +69,8 @@ export class Member {
   }
   get manageable() {
     if (this.user.id === this.guild.ownerId) return false;
-    if (this.user.id === this.client.id) return false;
-    if (this.client.id === this.guild.ownerId) return true;
+    if (this.user.id === this.client.user.id) return false;
+    if (this.client.user.id === this.guild.ownerId) return true;
     return (
       this.guild.members.me!.roles.highest.comparePositionsTo(
         this.roles.highest
