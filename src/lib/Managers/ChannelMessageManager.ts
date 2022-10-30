@@ -9,6 +9,8 @@ import { GuildTextChannel } from "../GuildTextChannel.js";
 import { ThreadChannel } from "../ThreadChannel.js";
 import { VoiceChannel } from "../VoiceChannel.js";
 import { DMChannel } from "../DMChannel.js";
+import { MessageOptions } from "../Util/Channel.js";
+import { MessagePayload } from "../MessagePayload.js";
 
 export class ChannelMessageManager extends Manager<string, Message> {
   channel: GuildTextChannel | ThreadChannel | VoiceChannel | DMChannel;
@@ -66,5 +68,17 @@ export class ChannelMessageManager extends Manager<string, Message> {
   }
   private _add(data: Message) {
     this.cache.set(data.id, data);
+  }
+  async edit(id: string, options: MessageOptions | string) {
+    const { body, files } = await new MessagePayload(options).resolveBody();
+    const message = new Message(
+      await this.client.rest.patch(Routes.channelMessage(this.channel.id, id), {
+        body,
+        files,
+      }),
+      this.client
+    );
+    this._add(message);
+    return message;
   }
 }
