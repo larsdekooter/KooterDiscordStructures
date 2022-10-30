@@ -13,14 +13,11 @@ import { MessageOptions } from "../Util/Channel.js";
 import { MessagePayload } from "../MessagePayload.js";
 
 export class ChannelMessageManager extends Manager<string, Message> {
-  channel: GuildTextChannel | ThreadChannel | VoiceChannel | DMChannel;
-  constructor(
-    client: Client,
-    channel: GuildTextChannel | ThreadChannel | VoiceChannel | DMChannel
-  ) {
+  channelId: string;
+  constructor(client: Client, channelId: string) {
     super(client);
     this.cache = new Collection<string, Message>();
-    this.channel = channel;
+    this.channelId = channelId;
   }
   async fetch(
     options?: MessageFetchOptions | string | Message
@@ -28,12 +25,12 @@ export class ChannelMessageManager extends Manager<string, Message> {
     if (typeof options === "string") {
       const message = new Message(
         await this.client.rest.get(
-          Routes.channelMessage(this.channel.id, options)
+          Routes.channelMessage(this.channelId, options)
         ),
         this.client
       );
       this._add(message);
-      if (this.channel.inGuild() && this.channel.isTextBased()) {
+      if (this.channel!.inGuild() && this.channel.isTextBased()) {
         this.channel.messages._add(message);
       }
       return message;
@@ -41,18 +38,18 @@ export class ChannelMessageManager extends Manager<string, Message> {
     if (options instanceof Message) {
       const message = new Message(
         await this.client.rest.get(
-          Routes.channelMessage(this.channel.id, options.id)
+          Routes.channelMessage(this.channelId, options.id)
         ),
         this.client
       );
       this._add(message);
-      if (this.channel.inGuild() && this.channel.isTextBased()) {
+      if (this.channel!.inGuild() && this.channel.isTextBased()) {
         this.channel.messages._add(message);
       }
       return message;
     } else {
       const messages = (
-        (await this.client.rest.get(Routes.channelMessages(this.channel.id), {
+        (await this.client.rest.get(Routes.channelMessages(this.channelId), {
           query: makeURLSearchParams(options),
         })) as any[]
       )
@@ -72,7 +69,7 @@ export class ChannelMessageManager extends Manager<string, Message> {
   async edit(id: string, options: MessageOptions | string) {
     const { body, files } = await new MessagePayload(options).resolveBody();
     const message = new Message(
-      await this.client.rest.patch(Routes.channelMessage(this.channel.id, id), {
+      await this.client.rest.patch(Routes.channelMessage(this.channelId, id), {
         body,
         files,
       }),
@@ -80,5 +77,15 @@ export class ChannelMessageManager extends Manager<string, Message> {
     );
     this._add(message);
     return message;
+  }
+  get channel() {
+    return (
+      (this.client.channels.cache.get(this.channelId) as
+        | GuildTextChannel
+        | ThreadChannel
+        | VoiceChannel
+        | DMChannel
+        | undefined) ?? null
+    );
   }
 }

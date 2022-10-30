@@ -8,22 +8,28 @@ import { RoleFetchOptions } from "../Util/Options.js";
 import { Manager } from "./Manager.js";
 
 export class GuildMemberRoleManager extends Manager<string, Role> {
-  member: Member;
-  guild: Guild;
+  memberId: string;
+  guildId: string;
   constructor(client: Client, member: Member) {
     super(client);
     this.cache = new Collection<string, Role>();
-    this.member = member;
-    this.guild = this.member.guild;
-    this.guild.roles.cache
-      .filter((role) => this.member._roles.includes(role.id))
-      .reduce(
-        (coll: Collection<string, Role>, role) => coll.set(role.id, role),
-        this.cache
-      );
+    this.memberId = member.id;
+    this.guildId = this.member!.guild.id;
+    this.guild!.roles.cache.filter((role) =>
+      this.member!._roles.includes(role.id)
+    ).reduce(
+      (coll: Collection<string, Role>, role) => coll.set(role.id, role),
+      this.cache
+    );
+  }
+  get guild() {
+    return this.client.guilds.cache.get(this.guildId) ?? null;
+  }
+  get member() {
+    return this.guild!.members.cache.get(this.memberId) ?? null;
   }
   set(roles: Role[] | string[]) {
-    return this.member.edit({ roles });
+    return this.member!.edit({ roles });
   }
   get highest() {
     return this.cache.reduce(
@@ -75,25 +81,25 @@ export class GuildMemberRoleManager extends Manager<string, Role> {
   async fetch({ id, force }: RoleFetchOptions) {
     if (id && force) {
       const role = new Role(
-        await this.client.rest.get(Routes.guildRole(this.guild.id, id)),
-        this.guild
+        await this.client.rest.get(Routes.guildRole(this.guildId, id)),
+        this.guild!
       );
       this._add(role);
       return role;
     } else if (!id) {
       return (
         (await this.client.rest.get(
-          Routes.guildRoles(this.guild.id)
+          Routes.guildRoles(this.guildId)
         )) as APIRole[]
       )
-        .map((role) => new Role(role, this.guild))
+        .map((role) => new Role(role, this.guild!))
         .reduce((coll, dat) => coll.set(dat.id, dat), this.cache)
-        .filter((role) => this.member._roles.includes(role.id));
+        .filter((role) => this.member!._roles.includes(role.id));
     } else if (this.cache.get(id)) return this.cache.get(id) ?? null;
     else {
       const role = new Role(
-        await this.client.rest.get(Routes.guildRole(this.guild.id, id)),
-        this.guild
+        await this.client.rest.get(Routes.guildRole(this.guildId, id)),
+        this.guild!
       );
       this._add(role);
       return role;

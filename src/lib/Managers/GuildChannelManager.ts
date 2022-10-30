@@ -9,10 +9,10 @@ import { GuildChannel } from "../GuildChannel.js";
 import { findChannelType } from "../Util/Channel.js";
 
 export class GuildChannelManager extends Manager<string, GuildChannel> {
-  guild: Guild;
+  guildId: string;
   constructor(client: Client, guild: Guild) {
     super(client);
-    this.guild = guild;
+    this.guildId = guild.id;
   }
   async fetch(id?: string, force = false) {
     if (id && force) {
@@ -20,7 +20,7 @@ export class GuildChannelManager extends Manager<string, GuildChannel> {
         await this.client.rest.get(Routes.channel(id)),
         this.client
       );
-      if (channel.guildId !== this.guild.id) return null;
+      if (channel.guildId !== this.guildId) return null;
 
       this.cache.set(channel.id, channel);
       this.client.channels.cache.set(channel.id, channel);
@@ -28,7 +28,7 @@ export class GuildChannelManager extends Manager<string, GuildChannel> {
     } else if (!id && force) {
       const channels = (
         (await this.client.rest.get(
-          Routes.guildChannels(this.guild.id)
+          Routes.guildChannels(this.guildId)
         )) as APIChannel[]
       ).reduce(
         (coll: Collection<string, Channel>, channel) =>
@@ -55,7 +55,7 @@ export class GuildChannelManager extends Manager<string, GuildChannel> {
   }
   async create(options: CreateChannelOptions = { name: "" }) {
     const channel = new GuildChannel(
-      await this.client.rest.post(Routes.guildChannels(this.guild.id), {
+      await this.client.rest.post(Routes.guildChannels(this.guildId), {
         body: options,
       }),
       this.client
@@ -74,5 +74,8 @@ export class GuildChannelManager extends Manager<string, GuildChannel> {
   private _add(data: GuildChannel) {
     this.cache.set(data.id, data);
     this.client.channels.cache.set(data.id, data);
+  }
+  get guild() {
+    return this.client.guilds.cache.get(this.guildId) ?? null;
   }
 }

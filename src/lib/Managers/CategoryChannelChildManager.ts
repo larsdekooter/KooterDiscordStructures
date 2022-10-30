@@ -7,22 +7,25 @@ import { Manager } from "./Manager.js";
 
 export class CategoryChannelChildManager extends Manager<string, GuildChannel> {
   guild: Guild | PartialGuild;
-  channel: CategoryChannel;
-  constructor(
-    client: Client,
-    guild: Guild | PartialGuild,
-    channel: CategoryChannel
-  ) {
+  channelId: string;
+  constructor(client: Client, guild: Guild | PartialGuild, channelId: string) {
     super(client);
     this.guild = guild;
-    this.channel = channel;
+    this.channelId = channelId;
     this.guild.channels.cache
-      .filter((channel) => channel.parentId === this.channel.id)
+      .filter((channel) => channel.parentId === this.channelId)
       .forEach((channel) => this._add(channel));
   }
   private _add(data: GuildChannel) {
     this.cache.set(data.id, data);
     this.guild.channels.cache.set(data.id, data);
     this.client.channels.cache.set(data.id, data);
+  }
+  get channel() {
+    return (
+      (this.client.channels.cache.get(this.channelId) as
+        | CategoryChannel
+        | undefined) ?? null
+    );
   }
 }

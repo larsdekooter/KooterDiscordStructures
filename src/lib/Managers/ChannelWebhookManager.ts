@@ -10,15 +10,15 @@ export type WebhookCreateOptions = {
 };
 
 export class ChannelWebhookManager extends Manager<string, Webhook> {
-  channel: GuildTextChannel;
-  constructor(client: Client, channel: GuildTextChannel) {
+  channelId: string;
+  constructor(client: Client, channelId: string) {
     super(client);
-    this.channel = channel;
+    this.channelId = channelId;
   }
   async fetch() {
     return (
       (await this.client.rest.get(
-        Routes.channelWebhooks(this.channel.id)
+        Routes.channelWebhooks(this.channel!.id)
       )) as APIWebhook[]
     )
       .map((webhook) => new Webhook(webhook, this.client))
@@ -26,7 +26,7 @@ export class ChannelWebhookManager extends Manager<string, Webhook> {
   }
   async create(options: WebhookCreateOptions) {
     const apiWebhook = (await this.client.rest.post(
-      Routes.channelWebhooks(this.channel.id),
+      Routes.channelWebhooks(this.channel!.id),
       { body: options }
     )) as APIWebhook;
     const webhook = new Webhook(apiWebhook, this.client);
@@ -40,6 +40,13 @@ export class ChannelWebhookManager extends Manager<string, Webhook> {
     return new Webhook(
       (await this.client.rest.get(Routes.webhook(id, token))) as APIWebhook,
       this.client
+    );
+  }
+  get channel() {
+    return (
+      (this.client.channels.cache.get(this.channelId) as
+        | GuildTextChannel
+        | undefined) ?? null
     );
   }
 }

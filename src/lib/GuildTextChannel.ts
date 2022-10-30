@@ -33,12 +33,12 @@ export class GuildTextChannel extends GuildChannel {
     super(data, client);
     this.defaultAutoArchiveDuration = data.default_auto_archive_duration;
     this.lastMessageId = data.last_message_id;
-    this.messages = new ChannelMessageManager(this.client, this);
+    this.messages = new ChannelMessageManager(this.client, this.id);
     this.lastPinTimestamp = data.last_pin_timestamp;
     this.nsfw = data.nsfw;
     this.threads = new GuildTextThreadManager(this.client, this);
     this.topic = data.topic;
-    this.webhooks = new ChannelWebhookManager(this.client, this);
+    this.webhooks = new ChannelWebhookManager(this.client, this.id);
   }
   get lastPinAt() {
     if (this.lastPinTimestamp) {

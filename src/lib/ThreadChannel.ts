@@ -38,7 +38,7 @@ export class ThreadChannel extends Channel {
     this.lastMessageId = data.last_message_id;
     this.memberCount = data.member_count;
     this.messageCount = data.message_count;
-    this.messages = new ChannelMessageManager(this.client, this);
+    this.messages = new ChannelMessageManager(this.client, this.id);
     this.ownerId = data.owner_id;
     this.parentId = data.parent_id;
     this.rateLimitPerUser = data.rate_limit_per_user;

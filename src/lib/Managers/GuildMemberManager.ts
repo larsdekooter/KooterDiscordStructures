@@ -10,10 +10,13 @@ import { Manager } from "./Manager.js";
 import { EditMemberOptions } from "../Util/Options.js";
 
 export class GuildMemberManager extends Manager<string, Member> {
-  guild: Guild;
+  guildId: string;
   constructor(client: Client, guild: Guild) {
     super(client);
-    this.guild = guild;
+    this.guildId = guild.id;
+  }
+  get guild() {
+    return this.client.guilds.cache.get(this.guildId) ?? null;
   }
   get me() {
     return this.cache.get(this.client.user.id as string);
@@ -24,15 +27,15 @@ export class GuildMemberManager extends Manager<string, Member> {
     if (id != undefined && id != null) {
       const member = new Member(
         await this.client.rest.get(
-          Routes.guildMember(this.guild.id, id as unknown as string)
+          Routes.guildMember(this.guildId, id as unknown as string)
         ),
-        this.guild
+        this.guild!
       );
       this._add(member);
       return member as any;
     } else {
       const members = (await this.client.rest.get(
-        Routes.guildMembers(this.guild.id),
+        Routes.guildMembers(this.guildId),
         {
           query: makeURLSearchParams({ limit: 1000 }),
         }
@@ -41,11 +44,11 @@ export class GuildMemberManager extends Manager<string, Member> {
         "debug",
         `${Colors.cyan("[RECIEVING]: ")} Recieved ${
           members.length
-        } members from ${this.guild.name}`
+        } members from ${this.guild!.name}`
       );
       return members.reduce(
         (coll: Collection<string, Member>, member: any) =>
-          coll.set(member.user.id, new Member(member, this.guild)),
+          coll.set(member.user.id, new Member(member, this.guild!)),
         this.cache
       );
     }
@@ -63,17 +66,17 @@ export class GuildMemberManager extends Manager<string, Member> {
     returnData.communication_disabled_until = data.communicationDisabledUntil;
 
     const updatedMember = new Member(
-      await this.client.rest.patch(Routes.guildMember(this.guild.id, id), {
+      await this.client.rest.patch(Routes.guildMember(this.guildId, id), {
         body: returnData,
       }),
-      this.guild
+      this.guild!
     );
     this._add(updatedMember);
     return updatedMember;
   }
   async remove(userId: string) {
     return await this.client.rest.delete(
-      Routes.guildMember(this.guild.id, userId)
+      Routes.guildMember(this.guildId, userId)
     );
   }
   private _add(data: Member) {

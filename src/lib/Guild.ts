@@ -147,7 +147,7 @@ export class Guild {
     this.premiumProgressBarEnabled = data.premium_progress_bar_enabled;
     this.members = new GuildMemberManager(this.client, this);
     this.channels = new GuildChannelManager(this.client, this);
-    this.bans = new GuildBanManager(this.client, this);
+    this.bans = new GuildBanManager(this.client, this.id);
     this.client.channels.cache
       .filter((channel) => {
         if (channel instanceof GuildChannel) {

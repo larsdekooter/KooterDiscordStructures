@@ -6,10 +6,10 @@ import { Role } from "../Role.js";
 import { Manager } from "./Manager.js";
 
 export class GuildRoleManager extends Manager<string, Role> {
-  guild: Guild;
+  guildId: string;
   constructor(client: Client, guild: Guild, roles: any[]) {
     super(client);
-    this.guild = guild;
+    this.guildId = guild.id;
     roles
       .map((role) => new Role(role, guild))
       .reduce((coll, role) => {
@@ -28,15 +28,18 @@ export class GuildRoleManager extends Manager<string, Role> {
       mentionable: options.mentionable,
     };
     const role = new Role(
-      await this.client.rest.post(Routes.guildRoles(this.guild.id), {
+      await this.client.rest.post(Routes.guildRoles(this.guildId), {
         body: resolvedOptions,
       }),
-      this.guild
+      this.guild!
     );
     this._add(role);
     return role;
   }
   private _add(data: Role) {
     this.cache.set(data.id, data);
+  }
+  get guild() {
+    return this.client.guilds.cache.get(this.guildId) ?? null;
   }
 }

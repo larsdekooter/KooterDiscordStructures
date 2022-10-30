@@ -25,7 +25,7 @@ export class VoiceChannel extends GuildVoiceChannel {
   declare type: ChannelType.GuildVoice;
   constructor(data: any, client: Client) {
     super(data, client);
-    this.messages = new ChannelMessageManager(this.client, this);
+    this.messages = new ChannelMessageManager(this.client, this.id);
     this.nsfw = data.nsfw;
     this.videoQualityMode = data.video_quality_mode;
     this.lastMessageId = data.last_message_id;

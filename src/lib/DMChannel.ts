@@ -21,7 +21,7 @@ export class DMChannel extends Channel {
   constructor(data: APIDMChannel, client: Client) {
     super(data, client);
     this.lastMessageId = data.last_message_id ?? null;
-    this.messages = new ChannelMessageManager(client, this);
+    this.messages = new ChannelMessageManager(client, this.id);
     this.recipientId = data.recipients![0].id;
     this.#apiRecipient = data.recipients![0];
   }

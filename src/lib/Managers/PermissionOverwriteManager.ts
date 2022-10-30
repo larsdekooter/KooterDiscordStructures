@@ -7,7 +7,7 @@ export class PermissionOverwriteManager extends Manager<
   string,
   PermissionOverwrites
 > {
-  channel: GuildChannel;
+  channelId: string;
   constructor(
     client: Client,
     overwrites: PermissionOverwrites[],
@@ -20,6 +20,13 @@ export class PermissionOverwriteManager extends Manager<
         new PermissionOverwrites(overwrite, channel, client)
       )
     );
-    this.channel = channel;
+    this.channelId = channel.id;
+  }
+  get channel() {
+    return (
+      (this.client.channels.cache.get(this.channelId) as
+        | GuildChannel
+        | undefined) ?? null
+    );
   }
 }
