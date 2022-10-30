@@ -8,7 +8,6 @@ import {
   Routes,
 } from "discord-api-types/v10";
 import e, { Express } from "express";
-import { Command } from "./Command.js";
 import { ChatInputCommandInteraction } from "./ChatInputCommandInteraction.js";
 import { ChannelManager } from "./Managers/ChannelManager.js";
 import { GuildManager } from "./Managers/GuildManager.js";
@@ -54,9 +53,6 @@ export declare interface Client extends EventEmitter {
 
 export class Client extends EventEmitter {
   latestResponseStatusCode: RESTResponseStatusCodes;
-  commands = new Collection<string, Command>();
-  components = new Collection<string, Command>();
-  modals = new Collection<string, Command>();
   collectors = new Collection<number, Collector>();
   modalCollectors = new Collection<number, ModalCollector>();
   rest: REST;

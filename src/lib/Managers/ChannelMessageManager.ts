@@ -8,12 +8,13 @@ import { Manager } from "./Manager.js";
 import { GuildTextChannel } from "../GuildTextChannel.js";
 import { ThreadChannel } from "../ThreadChannel.js";
 import { VoiceChannel } from "../VoiceChannel.js";
+import { DMChannel } from "../DMChannel.js";
 
 export class ChannelMessageManager extends Manager<string, Message> {
-  channel: GuildTextChannel | ThreadChannel | VoiceChannel;
+  channel: GuildTextChannel | ThreadChannel | VoiceChannel | DMChannel;
   constructor(
     client: Client,
-    channel: GuildTextChannel | ThreadChannel | VoiceChannel
+    channel: GuildTextChannel | ThreadChannel | VoiceChannel | DMChannel
   ) {
     super(client);
     this.cache = new Collection<string, Message>();

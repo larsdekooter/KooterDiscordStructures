@@ -5,6 +5,7 @@ import { GuildVoiceChannel } from "./GuildVoiceChannel.js";
 import { ThreadChannel } from "./ThreadChannel.js";
 import { GuildTextChannel } from "./GuildTextChannel.js";
 import { GuildChannel } from "./GuildChannel.js";
+import { DMChannel } from "./DMChannel.js";
 const ThreadChannelTypes = [
   ChannelType.AnnouncementThread,
   ChannelType.PublicThread,
@@ -51,5 +52,8 @@ export class Channel {
   }
   toString(): `<#${string}>` {
     return `<#${this.id}>`;
+  }
+  isDMBased(): this is DMChannel {
+    return [ChannelType.DM, ChannelType.GroupDM].includes(this.type);
   }
 }

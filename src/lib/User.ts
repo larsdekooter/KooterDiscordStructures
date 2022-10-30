@@ -1,5 +1,15 @@
+import {
+  ActionRowBuilder,
+  ButtonBuilder,
+  EmbedBuilder,
+  SelectMenuBuilder,
+} from "@discordjs/builders";
 import { UserPremiumType } from "discord-api-types/v10";
+import { AttachmentBuilder } from "./AttachmentBuilder.js";
 import { Client } from "./Client.js";
+import { Message } from "./Message.js";
+import { MessagePayload } from "./MessagePayload.js";
+import { MessageOptions } from "./Util/Channel.js";
 
 export class User {
   id: string;
@@ -45,5 +55,12 @@ export class User {
   }
   toString() {
     return `<@${this.id}>`;
+  }
+  createDM(force = false) {
+    return this.client.users.createDM(this.id, force);
+  }
+  async send(options: MessageOptions) {
+    const dm = await this.createDM();
+    return await dm.send(options);
   }
 }
