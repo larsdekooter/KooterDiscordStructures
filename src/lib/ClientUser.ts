@@ -7,7 +7,7 @@ import {
 } from "discord-api-types/v10";
 import { Client } from "./Client.js";
 import { DataResolver } from "./DataResolver.js";
-import { MessageOptions } from "./Util/Channel.js";
+import { MessageCreateOptions } from "./Util/Channel.js";
 import { UserEditOptions } from "./Util/Options.js";
 
 export class ClientUser {
@@ -45,7 +45,7 @@ export class ClientUser {
   createDM(force = false) {
     return this.client.users.createDM(this.id, force);
   }
-  async send(options: MessageOptions) {
+  async send(options: MessageCreateOptions) {
     const dm = await this.createDM();
     return await dm.send(options);
   }

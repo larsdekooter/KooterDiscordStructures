@@ -17,7 +17,7 @@ import { StageChannel } from "../StageChannel.js";
 import { TextChannel } from "../TextChannel.js";
 import { ThreadChannel } from "../ThreadChannel.js";
 import { VoiceChannel } from "../VoiceChannel.js";
-export type MessageOptions = {
+export type MessageCreateOptions = {
   content?: string;
   tts?: boolean;
   embeds?: EmbedBuilder[] | Object[];

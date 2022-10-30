@@ -66,7 +66,6 @@ export * from "./lib/Util/Channel.js";
 export * from "./lib/Util/ClientEvents.js";
 export * from "./lib/Util/CollectorOptions.js";
 export * from "./lib/Util/Colors.js";
-export * from "./lib/Util/EventNames.js";
 export * from "./lib/Util/InteractionOptionType.js";
 export * from "./lib/Util/OptionTypes.js";
 export * from "./lib/Util/Options.js";

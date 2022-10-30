@@ -3,7 +3,7 @@ import { Client } from "./Client.js";
 import { PartialGuild } from "./PartialGuild.js";
 import { User } from "./User.js";
 import { Channel } from "./Channel.js";
-import { MessageOptions } from "./Util/Channel.js";
+import { MessageCreateOptions } from "./Util/Channel.js";
 import { RawFile } from "@discordjs/rest";
 import {
   ActionRowBuilder,
@@ -58,7 +58,7 @@ export class Webhook {
       ? new Channel(data.source_channel, this.client)
       : null;
   }
-  async send(options: MessageOptions) {
+  async send(options: MessageCreateOptions) {
     let sendOptions: SendOptions;
     sendOptions = typeof options === "string" ? { content: options } : options;
 

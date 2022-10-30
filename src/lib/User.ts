@@ -9,7 +9,7 @@ import { AttachmentBuilder } from "./AttachmentBuilder.js";
 import { Client } from "./Client.js";
 import { Message } from "./Message.js";
 import { MessagePayload } from "./MessagePayload.js";
-import { MessageOptions } from "./Util/Channel.js";
+import { MessageCreateOptions } from "./Util/Channel.js";
 
 export class User {
   id: string;
@@ -59,7 +59,7 @@ export class User {
   createDM(force = false) {
     return this.client.users.createDM(this.id, force);
   }
-  async send(options: MessageOptions) {
+  async send(options: MessageCreateOptions) {
     const dm = await this.createDM();
     return await dm.send(options);
   }

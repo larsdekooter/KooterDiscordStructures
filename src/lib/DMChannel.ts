@@ -10,7 +10,7 @@ import { ChannelMessageManager } from "./Managers/ChannelMessageManager.js";
 import { Message } from "./Message.js";
 import { MessagePayload } from "./MessagePayload.js";
 import { User } from "./User.js";
-import { MessageOptions } from "./Util/Channel.js";
+import { MessageCreateOptions } from "./Util/Channel.js";
 
 export class DMChannel extends Channel {
   lastMessageId: string | null;
@@ -34,7 +34,7 @@ export class DMChannel extends Channel {
       ? new User(this.#apiRecipient, this.client)
       : null;
   }
-  async send(options: MessageOptions) {
+  async send(options: MessageCreateOptions) {
     const { body, files } = await new MessagePayload(options).resolveBody();
 
     const message = new Message(
