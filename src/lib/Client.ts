@@ -245,4 +245,7 @@ export class Client extends EventEmitter {
     this.rest.setToken(token);
     this.emit("ready", this);
   }
+  setToken(token: string) {
+    this.rest.setToken(token);
+  }
 }
