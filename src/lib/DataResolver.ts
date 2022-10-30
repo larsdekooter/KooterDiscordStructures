@@ -41,4 +41,17 @@ export class DataResolver {
 
     throw new Error("Unknown error");
   }
+  static async resolveImage(image: BufferResolvable) {
+    if (!image) return null;
+    if (typeof image === "string" && image.startsWith("data:")) return image;
+    const file = await (this.constructor as typeof DataResolver).resolveFile(
+      image
+    );
+    return this.resolveBase64(file.data);
+  }
+  static resolveBase64(data: BufferResolvable) {
+    if (Buffer.isBuffer(data))
+      return `data:image/jpg;base64,${data.toString("base64")}`;
+    return data;
+  }
 }

@@ -1,5 +1,6 @@
 import { ChannelType } from "discord-api-types/v10";
 import { Role } from "../Role";
+type BufferResolvable = string | Buffer;
 
 export type BanOptions = {
   deleteMessageSeconds?: number;
@@ -57,4 +58,9 @@ export type EmojiFetchOptions = {
 export type RoleFetchOptions = {
   id?: string;
   force?: boolean;
+};
+
+export type UserEditOptions = {
+  username?: string;
+  avatar?: BufferResolvable;
 };
