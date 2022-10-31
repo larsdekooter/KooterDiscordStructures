@@ -5,6 +5,7 @@ import {
   Routes,
 } from "discord-api-types/v10";
 import { Client } from "./Client.js";
+import { ApplicationCommandManager } from "./Managers/ApplicationCommandManager.js";
 import { User } from "./User.js";
 
 export class ClientApplication {
@@ -25,6 +26,7 @@ export class ClientApplication {
   verifyKey: string;
   flags: ApplicationFlags;
   client: Client;
+  commands: ApplicationCommandManager;
   constructor(data: APIApplication = {} as APIApplication, client: Client) {
     this.client = client;
     this._patch(data);
@@ -42,6 +44,7 @@ export class ClientApplication {
     this.team = data.team;
     this.verifyKey = data.verify_key;
     this.flags = data.flags;
+    this.commands = new ApplicationCommandManager(this.client);
   }
   async fetch() {
     const apiApplication = (await this.client.rest.get(
