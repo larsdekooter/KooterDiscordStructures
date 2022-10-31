@@ -59,6 +59,11 @@ export * from "./lib/Button.js";
 export * from "./lib/Component.js";
 export * from "./lib/SelectMenu.js";
 export * from "./lib/ActionRow.js";
+export * from "./lib/ApplicationCommand.js";
+export * from "./lib/Managers/ApplicationCommandManager.js";
+export * from "./lib/MessagePayload.js";
+export * from "./lib/DataResolver.js";
+export * from "./lib/DMChannel.js";
 
 //Utils
 export * from "./lib/Util/Array.js";
