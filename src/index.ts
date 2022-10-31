@@ -78,8 +78,6 @@ export {
   InteractionResponseType,
   InteractionResponseFlags,
 } from "discord-interactions";
-import * as Rest from "@discordjs/rest";
-export const discord_js_rest = Rest;
 
 export * from "discord-api-types/v10";
 export * from "discord-api-types/globals";
