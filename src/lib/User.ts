@@ -4,6 +4,7 @@ import {
   EmbedBuilder,
   SelectMenuBuilder,
 } from "@discordjs/builders";
+import { ImageURLOptions } from "@discordjs/rest";
 import { UserPremiumType } from "discord-api-types/v10";
 import { AttachmentBuilder } from "./AttachmentBuilder.js";
 import { Client } from "./Client.js";
@@ -47,9 +48,9 @@ export class User {
   get tag() {
     return `${this.username}#${this.discriminator}`;
   }
-  avatarURL() {
+  avatarURL(options: ImageURLOptions) {
     if (this.avatar) {
-      return this.client.rest.cdn.avatar(this.id, this.avatar);
+      return this.client.rest.cdn.avatar(this.id, this.avatar, options);
     }
     return null;
   }
@@ -62,5 +63,13 @@ export class User {
   async send(options: MessageCreateOptions) {
     const dm = await this.createDM();
     return await dm.send(options);
+  }
+  displayAvatarURL(options: ImageURLOptions) {
+    return this.avatarURL(options) ?? this.defaultAvatarURL;
+  }
+  get defaultAvatarURL() {
+    return this.client.rest.cdn.defaultAvatar(
+      (this.discriminator as unknown as number) % 5
+    );
   }
 }
