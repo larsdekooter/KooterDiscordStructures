@@ -5,7 +5,4 @@ export class Component {
   constructor(data: APIMessageComponent) {
     this.data = data;
   }
-  get type() {
-    return this.data.type;
-  }
 }

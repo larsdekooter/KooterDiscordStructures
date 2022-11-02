@@ -1,6 +1,12 @@
-import { APISelectMenuComponent } from "discord-api-types/v10";
+import {
+  APISelectMenuComponent,
+  APIStringSelectComponent,
+} from "discord-api-types/v10";
 import { Component } from "./Component.js";
 
+/**
+ * @deprecated Will be removed in the next major version
+ */
 export class SelectMenu extends Component {
   constructor(data: APISelectMenuComponent) {
     super(data);
@@ -21,6 +27,6 @@ export class SelectMenu extends Component {
     return (this.data as APISelectMenuComponent).disabled ?? null;
   }
   get options() {
-    return (this.data as APISelectMenuComponent).options ?? null;
+    return (this.data as APIStringSelectComponent).options ?? null;
   }
 }

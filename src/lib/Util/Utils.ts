@@ -6,6 +6,13 @@ import path from "path";
 import fs from "fs";
 import { Snowflake } from "discord-api-types/globals";
 import { RawFile } from "@discordjs/rest";
+import {
+  APIActionRowComponent,
+  APIMessageActionRowComponent,
+  ComponentType,
+} from "discord-api-types/v10";
+import { Button } from "../Button.js";
+import * as Menus from "../SelectMenus/index.js";
 const isObject = (d: any) => typeof d === "object" && d !== null;
 
 function flattenFunc(obj: any, ...props: any[]) {
@@ -123,3 +130,26 @@ type ResolvedFile = {
   description: string;
   contentType?: string;
 };
+
+export function findComponentType(component: APIMessageActionRowComponent) {
+  switch (component.type) {
+    case ComponentType.Button: {
+      return new Button(component);
+    }
+    case ComponentType.ChannelSelect: {
+      return new Menus.ChannelSelectMenu(component);
+    }
+    case ComponentType.MentionableSelect: {
+      return new Menus.MentionableSelectMenu(component);
+    }
+    case ComponentType.RoleSelect: {
+      return new Menus.RoleSelectMenu(component);
+    }
+    case ComponentType.StringSelect: {
+      return new Menus.StringSelectMenu(component);
+    }
+    case ComponentType.UserSelect: {
+      return new Menus.UserSelectMenu(component);
+    }
+  }
+}
