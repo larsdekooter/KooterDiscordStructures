@@ -77,6 +77,9 @@ export * from "./lib/Util/Options.js";
 export * from "./lib/Util/ReplyOptions.js";
 export * from "./lib/Util/Utils.js";
 
+// Menus
+export * from "./lib/SelectMenus/index.js";
+
 export {
   verifyKey,
   verifyKeyMiddleware,

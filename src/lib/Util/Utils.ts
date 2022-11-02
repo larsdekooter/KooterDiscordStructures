@@ -10,9 +10,21 @@ import {
   APIActionRowComponent,
   APIMessageActionRowComponent,
   ComponentType,
+  InteractionType,
 } from "discord-api-types/v10";
 import { Button } from "../Button.js";
 import * as Menus from "../SelectMenus/index.js";
+import {
+  BaseSelectMenuInteraction,
+  ChannelSelectMenuInteraction,
+  MentionableSelectMenuInteraction,
+  RoleSelectMenuInteraction,
+  StringSelectMenuInteraction,
+  UserSelectMenuInteraction,
+} from "../SelectMenuInteraction.js";
+import { Client } from "../Client.js";
+import { Response } from "./HTTPTypes.js";
+import { Interaction } from "../Interaction.js";
 const isObject = (d: any) => typeof d === "object" && d !== null;
 
 function flattenFunc(obj: any, ...props: any[]) {
@@ -135,21 +147,73 @@ export function findComponentType(component: APIMessageActionRowComponent) {
   switch (component.type) {
     case ComponentType.Button: {
       return new Button(component);
+      break;
     }
     case ComponentType.ChannelSelect: {
       return new Menus.ChannelSelectMenu(component);
+      break;
     }
     case ComponentType.MentionableSelect: {
       return new Menus.MentionableSelectMenu(component);
+      break;
     }
     case ComponentType.RoleSelect: {
       return new Menus.RoleSelectMenu(component);
+      break;
     }
     case ComponentType.StringSelect: {
       return new Menus.StringSelectMenu(component);
+      break;
     }
     case ComponentType.UserSelect: {
       return new Menus.UserSelectMenu(component);
+      break;
     }
   }
+}
+
+export function findSelectMenuInteractionType(
+  res: Response,
+  interaction: any,
+  client: Client
+) {
+  // console.log(interaction.data.componentType, ComponentType);
+  switch (interaction.data.component_type) {
+    case ComponentType.ChannelSelect: {
+      return new ChannelSelectMenuInteraction(res, interaction, client);
+      break;
+    }
+    case ComponentType.MentionableSelect: {
+      return new MentionableSelectMenuInteraction(res, interaction, client);
+      break;
+    }
+    case ComponentType.RoleSelect: {
+      return new RoleSelectMenuInteraction(res, interaction, client);
+      break;
+    }
+    case ComponentType.StringSelect: {
+      return new StringSelectMenuInteraction(res, interaction, client);
+      break;
+    }
+    case ComponentType.UserSelect: {
+      return new UserSelectMenuInteraction(res, interaction, client);
+      break;
+    }
+    default:
+      return new BaseSelectMenuInteraction(res, interaction, client);
+      break;
+  }
+}
+
+export function interactionIsSelectMenuInteraction(
+  componentType: ComponentType
+) {
+  const type = componentType;
+  return (
+    type === ComponentType.ChannelSelect ||
+    type === ComponentType.MentionableSelect ||
+    type === ComponentType.RoleSelect ||
+    type === ComponentType.StringSelect ||
+    type === ComponentType.UserSelect
+  );
 }

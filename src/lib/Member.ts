@@ -45,7 +45,7 @@ export class Member {
     this.communicationDisabledUntil = data.communication_disabled_until;
     this.guild = guild;
     this.client = this.guild.client;
-    this.roles = new GuildMemberRoleManager(this.client, this);
+    this.roles = new GuildMemberRoleManager(this.client, this, this.guild.id);
     this.roles.cache.set(
       this.guild.id,
       this.guild.roles.cache.get(this.guild.id) as Role

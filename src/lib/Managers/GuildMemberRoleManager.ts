@@ -10,13 +10,15 @@ import { Manager } from "./Manager.js";
 export class GuildMemberRoleManager extends Manager<string, Role> {
   memberId: string;
   guildId: string;
-  constructor(client: Client, member: Member) {
+  #member: Member;
+  constructor(client: Client, member: Member, guildId: string) {
     super(client);
     this.cache = new Collection<string, Role>();
     this.memberId = member.id;
-    this.guildId = this.member!.guild.id;
+    this.guildId = guildId;
+    this.#member = member;
     this.guild!.roles.cache.filter((role) =>
-      this.member!._roles.includes(role.id)
+      this.#member!._roles.includes(role.id)
     ).reduce(
       (coll: Collection<string, Role>, role) => coll.set(role.id, role),
       this.cache

@@ -23,7 +23,6 @@ import { Interaction } from "./Interaction.js";
 import { verifyKeyMiddleware } from "discord-interactions";
 import { Member } from "./Member.js";
 import { AutocompleteInteraction } from "./AutocompleteInteraction.js";
-import { SelectMenuInteraction } from "./SelectMenuInteraction.js";
 import { ButtonInteraction } from "./ButtonInteraction.js";
 import { ModalSubmitInteraction } from "./ModalSubmitInteraction.js";
 import { Guild } from "./Guild.js";
@@ -33,6 +32,10 @@ import EventEmitter from "events";
 import { ClientApplication } from "./ClientApplication.js";
 import { MessageComponentInteraction } from "./MessageComponentInteraction.js";
 import { ClientUser } from "./ClientUser.js";
+import {
+  findSelectMenuInteractionType,
+  interactionIsSelectMenuInteraction,
+} from "./Util/Utils.js";
 
 export enum RESTResponseStatusCodes {
   RateLimit = 429,
@@ -113,13 +116,17 @@ export class Client extends EventEmitter {
               break;
             }
             case InteractionType.MessageComponent: {
-              if (req.body.data.component_type === ComponentType.SelectMenu) {
-                interaction = new SelectMenuInteraction(res, req.body, this);
+              if (req.body.data.component_type === ComponentType.Button) {
+                interaction = new ButtonInteraction(res, req.body, this);
                 break;
               } else if (
-                req.body.data.component_type === ComponentType.Button
+                interactionIsSelectMenuInteraction(req.body.data.component_type)
               ) {
-                interaction = new ButtonInteraction(res, req.body, this);
+                interaction = findSelectMenuInteractionType(
+                  res,
+                  req.body,
+                  this
+                );
                 break;
               }
             }
@@ -137,10 +144,9 @@ export class Client extends EventEmitter {
             interaction.guild = (await this.guilds.fetch(
               interaction.guildId
             )) as Guild;
-            interaction.member = new Member(
-              interaction._member,
-              interaction.guild
-            );
+            const member = new Member(interaction._member, interaction.guild);
+            interaction.guild.members.cache.set(member.id, member);
+            interaction.member = member;
           }
           if (interaction.isMessageComponentInteraction()) {
             this.collectors.forEach((collector) =>

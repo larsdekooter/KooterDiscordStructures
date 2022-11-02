@@ -15,12 +15,16 @@ import { Response } from "./Util/HTTPTypes.js";
 
 export type ButtonInteractionData = {
   customId: string;
+  componentType: ComponentType;
 };
 export class ButtonInteraction extends MessageComponentInteraction {
   data: ButtonInteractionData;
   constructor(res: Response, i: any, client: Client) {
     super(res, i, client);
-    this.data = { customId: i.data.custom_id };
+    this.data = {
+      customId: i.data.custom_id,
+      componentType: i.data.component_type,
+    };
   }
   async disableButtons() {
     const rows = this.message.components;

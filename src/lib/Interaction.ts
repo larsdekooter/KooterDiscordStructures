@@ -16,7 +16,7 @@ import { Member } from "./Member.js";
 import { ModalSubmitInteraction } from "./ModalSubmitInteraction.js";
 import { PermissionsBitField } from "./PermissionsBitField.js";
 import { RepliableInteraction } from "./RepliableInteraction.js";
-import { SelectMenuInteraction } from "./SelectMenuInteraction.js";
+import { BaseSelectMenuInteraction } from "./SelectMenuInteraction.js";
 import { User } from "./User.js";
 import { Response } from "./Util/HTTPTypes.js";
 import { ContextMenuCommandInteraction } from "./ContextMenuCommandInteraction.js";
@@ -24,6 +24,7 @@ import { CommandInteraction } from "./CommandInteraction.js";
 import { UserContextMenuCommandInteraction } from "./UserContextMenuCommandInteraction.js";
 import { MessageContextMenuCommandInteraction } from "./MessageContextMenuCommandInteraction.js";
 import { MessageComponentInteraction } from "./MessageComponentInteraction.js";
+import { interactionIsSelectMenuInteraction } from "./Util/Utils.js";
 
 export class Interaction {
   res: Response;
@@ -92,11 +93,10 @@ export class Interaction {
       (this.data as any).component_type === ComponentType.Button
     );
   }
-  isSelectMenu(): this is SelectMenuInteraction {
+  isSelectMenu(): this is BaseSelectMenuInteraction {
     return (
-      this.type === InteractionType.MessageComponent &&
-      // @ts-ignore
-      (this.data as any).componentType === ComponentType.SelectMenu
+      this.isMessageComponentInteraction() &&
+      interactionIsSelectMenuInteraction(this.data.componentType)
     );
   }
   isRepliable(): this is RepliableInteraction {
@@ -127,6 +127,36 @@ export class Interaction {
   }
   inGuild() {
     return this.guild != undefined && this.guild !== null;
+  }
+  isChannelSelectMenuInteraction() {
+    return (
+      this.isMessageComponentInteraction() &&
+      this.data.componentType === ComponentType.ChannelSelect
+    );
+  }
+  isMentionableSelectMenuInteraction() {
+    return (
+      this.isMessageComponentInteraction() &&
+      this.data.componentType === ComponentType.MentionableSelect
+    );
+  }
+  isRoleSelectMenuInteraction() {
+    return (
+      this.isMessageComponentInteraction() &&
+      this.data.componentType === ComponentType.RoleSelect
+    );
+  }
+  isStringSelectMenuInteraction() {
+    return (
+      this.isMessageComponentInteraction() &&
+      this.data.componentType === ComponentType.StringSelect
+    );
+  }
+  isUserSelectMenuInteraction() {
+    return (
+      this.isMessageComponentInteraction() &&
+      this.data.componentType === ComponentType.UserSelect
+    );
   }
   async getGuild(force = false) {
     if (this.guildId) {

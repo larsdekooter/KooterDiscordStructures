@@ -8,6 +8,7 @@ import {
 } from "@discordjs/builders";
 import {
   APIMessageComponentEmoji,
+  ComponentType,
   InteractionResponseType,
   Routes,
 } from "discord-api-types/v10";
@@ -26,10 +27,12 @@ import { Collection } from "@discordjs/collection";
 export class MessageComponentInteraction extends RepliableInteraction {
   message: Message;
   customId: string;
+  data: { componentType: ComponentType };
   constructor(res: Response, interaction: any, client: Client) {
     super(res, interaction, client);
     this.message = new Message(interaction.message, this.client);
     this.customId = interaction.data.custom_id;
+    this.data = { componentType: interaction.data.component_type };
   }
 
   async deferUpdate() {
