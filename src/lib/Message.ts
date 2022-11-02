@@ -121,8 +121,8 @@ export class Message {
 
     this.thread = data.thread ? new ThreadChannel(data.thread, client) : null;
 
-    this.components = data.components.map((row: APIMessageComponentTypes[]) => {
-      return new ActionRow(row);
+    this.components = data.components.map((row: any) => {
+      return new ActionRow(row.components);
     });
     /**
      * @type {MessageStickers?}

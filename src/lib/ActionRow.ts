@@ -11,7 +11,7 @@ export type APIMessageComponentTypes =
   | APIButtonComponent;
 
 export class ActionRow<T extends Component> {
-  type: ComponentType.ActionRow;
+  type = ComponentType.ActionRow;
   components: T[];
   constructor(components: APIMessageComponentTypes[]) {
     this.components = components.map((component) => {
