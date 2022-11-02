@@ -1,6 +1,6 @@
 {
   "name": "kooterdiscordstructures",
-  "version": "1.6.19",
+  "version": "1.7.0",
   "main": "dist/index.js",
   "scripts": {
     "test": "node test.js",
