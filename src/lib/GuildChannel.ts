@@ -1,5 +1,9 @@
 import { Collection } from "@discordjs/collection";
-import { PermissionFlagsBits, Routes } from "discord-api-types/v10";
+import {
+  APIGuildChannel,
+  PermissionFlagsBits,
+  Routes,
+} from "discord-api-types/v10";
 import { CategoryChannel } from "./CategoryChannel.js";
 import { Channel } from "./Channel.js";
 import { Client } from "./Client.js";
@@ -21,8 +25,8 @@ export class GuildChannel extends Channel {
     this.guildId = data.guild_id;
     this.name = data.name;
     this.permissionOverwrites = new PermissionOverwriteManager(
-      data.permission_overwrites,
-      data.permission_overwrites,
+      client,
+      data.permission_overwrites!,
       this
     );
     this.permissionsLocked = data.permissions_locked;

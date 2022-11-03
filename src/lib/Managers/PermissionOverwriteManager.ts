@@ -1,3 +1,4 @@
+import { APIOverwrite } from "discord-api-types/v10.js";
 import { Client } from "../Client.js";
 import { GuildChannel } from "../GuildChannel.js";
 import { PermissionOverwrites } from "../PermissionOverwrite.js";
@@ -10,11 +11,11 @@ export class PermissionOverwriteManager extends Manager<
   channelId: string;
   constructor(
     client: Client,
-    overwrites: PermissionOverwrites[],
+    overwrites: APIOverwrite[],
     channel: GuildChannel
   ) {
     super(client);
-    overwrites.map((overwrite) =>
+    overwrites?.map((overwrite) =>
       this.cache.set(
         overwrite.id,
         new PermissionOverwrites(overwrite, channel, client)
