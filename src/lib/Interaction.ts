@@ -103,7 +103,13 @@ export class Interaction {
   isSelectMenu(): this is BaseSelectMenuInteraction {
     return (
       this.isMessageComponentInteraction() &&
-      interactionIsSelectMenuInteraction(this.data.componentType)
+      [
+        ComponentType.ChannelSelect,
+        ComponentType.MentionableSelect,
+        ComponentType.RoleSelect,
+        ComponentType.StringSelect,
+        ComponentType.UserSelect,
+      ].includes(this.data.componentType)
     );
   }
   isRepliable(): this is RepliableInteraction {
