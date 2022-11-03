@@ -29,7 +29,8 @@ export class GuildMemberManager extends Manager<string, Member> {
         await this.client.rest.get(
           Routes.guildMember(this.guildId, id as unknown as string)
         ),
-        this.guild!
+        this.guild!.id,
+        this.client
       );
       this._add(member);
       return member as any;
@@ -48,7 +49,10 @@ export class GuildMemberManager extends Manager<string, Member> {
       );
       return members.reduce(
         (coll: Collection<string, Member>, member: any) =>
-          coll.set(member.user.id, new Member(member, this.guild!)),
+          coll.set(
+            member.user.id,
+            new Member(member, this.guild!.id, this.client)
+          ),
         this.cache
       );
     }
@@ -69,7 +73,8 @@ export class GuildMemberManager extends Manager<string, Member> {
       await this.client.rest.patch(Routes.guildMember(this.guildId, id), {
         body: returnData,
       }),
-      this.guild!
+      this.guild!.id,
+      this.client
     );
     this._add(updatedMember);
     return updatedMember;

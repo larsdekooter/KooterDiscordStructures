@@ -34,7 +34,7 @@ export class UserContextMenuCommandInteractionOptionResolver {
       const targetUser = users[this.targetId];
       const targetmember = members![this.targetId];
       targetmember.user = targetUser;
-      return new Member(targetmember, this.guild);
+      return new Member(targetmember, this.guild!.id, this.client);
     }
     return null;
   }

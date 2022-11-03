@@ -16,7 +16,14 @@ import { Member } from "./Member.js";
 import { ModalSubmitInteraction } from "./ModalSubmitInteraction.js";
 import { PermissionsBitField } from "./PermissionsBitField.js";
 import { RepliableInteraction } from "./RepliableInteraction.js";
-import { BaseSelectMenuInteraction } from "./SelectMenuInteraction.js";
+import {
+  BaseSelectMenuInteraction,
+  ChannelSelectMenuInteraction,
+  MentionableSelectMenuInteraction,
+  RoleSelectMenuInteraction,
+  StringSelectMenuInteraction,
+  UserSelectMenuInteraction,
+} from "./SelectMenuInteraction.js";
 import { User } from "./User.js";
 import { Response } from "./Util/HTTPTypes.js";
 import { ContextMenuCommandInteraction } from "./ContextMenuCommandInteraction.js";
@@ -128,31 +135,31 @@ export class Interaction {
   inGuild() {
     return this.guild != undefined && this.guild !== null;
   }
-  isChannelSelectMenuInteraction() {
+  isChannelSelectMenuInteraction(): this is ChannelSelectMenuInteraction {
     return (
       this.isMessageComponentInteraction() &&
       this.data.componentType === ComponentType.ChannelSelect
     );
   }
-  isMentionableSelectMenuInteraction() {
+  isMentionableSelectMenuInteraction(): this is MentionableSelectMenuInteraction {
     return (
       this.isMessageComponentInteraction() &&
       this.data.componentType === ComponentType.MentionableSelect
     );
   }
-  isRoleSelectMenuInteraction() {
+  isRoleSelectMenuInteraction(): this is RoleSelectMenuInteraction {
     return (
       this.isMessageComponentInteraction() &&
       this.data.componentType === ComponentType.RoleSelect
     );
   }
-  isStringSelectMenuInteraction() {
+  isStringSelectMenuInteraction(): this is StringSelectMenuInteraction {
     return (
       this.isMessageComponentInteraction() &&
       this.data.componentType === ComponentType.StringSelect
     );
   }
-  isUserSelectMenuInteraction() {
+  isUserSelectMenuInteraction(): this is UserSelectMenuInteraction {
     return (
       this.isMessageComponentInteraction() &&
       this.data.componentType === ComponentType.UserSelect

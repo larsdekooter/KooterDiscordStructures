@@ -11,6 +11,7 @@ import { Role } from "./Role.js";
 import { User } from "./User.js";
 import { Guild } from "./Guild.js";
 import { findChannelType } from "./Util/Channel.js";
+import { Client } from "./Client.js";
 
 export class ChatInputCommandInteractionOptionResolver {
   #interaction: ChatInputCommandInteraction;
@@ -25,7 +26,9 @@ export class ChatInputCommandInteractionOptionResolver {
   #mentionableOptions: Option<string>[];
   #numberOptions: Option<number>[];
   options: CommandInteractionOption[];
-  constructor(interaction: ChatInputCommandInteraction) {
+  client: Client;
+  constructor(interaction: ChatInputCommandInteraction, client: Client) {
+    this.client = client;
     this.#interaction = interaction;
     this.options = [];
     const options = interaction.data.options ?? [
@@ -98,7 +101,11 @@ export class ChatInputCommandInteractionOptionResolver {
     const member = this.#resolvedOptions.members![userOption.value];
     member.user = this.#resolvedOptions.users![userOption.value];
 
-    return new Member(member, this.#interaction.guild as Guild);
+    return new Member(
+      member,
+      this.#interaction.guild?.id as string,
+      this.client
+    );
   }
   getAttachment(name: string): Attachment | null {
     const attachmentOption = this.#attachmentOptions.find(

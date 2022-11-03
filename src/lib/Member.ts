@@ -10,7 +10,6 @@ import { Role } from "./Role.js";
 export class Member {
   id: string;
   user: User;
-  guild: Guild;
   _roles: any[];
   nick?: string;
   avatar?: string;
@@ -22,8 +21,9 @@ export class Member {
   communicationDisabledUntil: any;
   client: Client;
   roles: GuildMemberRoleManager;
-  constructor(data: any, guild: Guild) {
-    this.user = new User(data.user, guild.client);
+  guildId: string;
+  constructor(data: any, guildId: string, client: Client) {
+    this.user = new User(data.user, client);
     this.id = this.user.id;
 
     this.nick = data.nick;
@@ -43,36 +43,39 @@ export class Member {
     this.pending = data.pending;
 
     this.communicationDisabledUntil = data.communication_disabled_until;
-    this.guild = guild;
-    this.client = this.guild.client;
-    this.roles = new GuildMemberRoleManager(this.client, this, this.guild.id);
+    this.guildId = guildId;
+    this.client = client;
+    this.roles = new GuildMemberRoleManager(this.client, this, this.guildId);
     this.roles.cache.set(
-      this.guild.id,
-      this.guild.roles.cache.get(this.guild.id) as Role
+      this.guildId,
+      this.guild?.roles.cache.get(this.guild.id) as Role
     );
   }
   toString(): `<@${string}>` {
     return `<@${this.id}>`;
   }
+  get guild() {
+    return this.client.guilds.cache.get(this.guildId) ?? null;
+  }
   edit(data: EditMemberOptions) {
-    return this.guild.members.edit(this, data);
+    return this.guild?.members.edit(this, data);
   }
   get permissions() {
-    if (this.user.id === this.guild.ownerId)
+    if (this.user.id === this.guild?.ownerId)
       return new PermissionsBitField(PermissionsBitField.All).freeze();
     return new PermissionsBitField(
       this.roles.cache.map((role) => role.permissions)
     ).freeze();
   }
   ban(options: BanOptions = { deleteMessageDays: 7 }) {
-    return this.guild.bans.create(this.id, options);
+    return this.guild?.bans.create(this.id, options);
   }
   get manageable() {
-    if (this.user.id === this.guild.ownerId) return false;
+    if (this.user.id === this.guild?.ownerId) return false;
     if (this.user.id === this.client.user.id) return false;
-    if (this.client.user.id === this.guild.ownerId) return true;
+    if (this.client.user.id === this.guild?.ownerId) return true;
     return (
-      this.guild.members.me!.roles.highest.comparePositionsTo(
+      this.guild!.members?.me!.roles?.highest?.comparePositionsTo(
         this.roles.highest
       ) > 0
     );
@@ -81,17 +84,17 @@ export class Member {
   get bannable() {
     return (
       this.manageable &&
-      this.guild.members.me!.permissions.has(PermissionFlagsBits.BanMembers)
+      this.guild?.members.me!.permissions.has(PermissionFlagsBits.BanMembers)
     );
   }
 
   get kickable() {
     return (
       this.manageable &&
-      this.guild.members.me!.permissions.has(PermissionFlagsBits.KickMembers)
+      this.guild?.members.me!.permissions.has(PermissionFlagsBits.KickMembers)
     );
   }
   kick() {
-    return this.guild.members.remove(this.id);
+    return this.guild?.members.remove(this.id);
   }
 }

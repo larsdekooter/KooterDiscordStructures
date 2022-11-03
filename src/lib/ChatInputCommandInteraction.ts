@@ -35,7 +35,10 @@ export class ChatInputCommandInteraction extends CommandInteraction {
       type: interaction.data.type,
       resolved: interaction.data.resolved,
     };
-    this.options = new ChatInputCommandInteractionOptionResolver(this);
+    this.options = new ChatInputCommandInteractionOptionResolver(
+      this,
+      this.client
+    );
   }
 
   get commandName() {

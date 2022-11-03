@@ -17,7 +17,7 @@ export class GuildMemberRoleManager extends Manager<string, Role> {
     this.memberId = member.id;
     this.guildId = guildId;
     this.#member = member;
-    this.guild!.roles.cache.filter((role) =>
+    this.guild!?.roles?.cache.filter((role) =>
       this.#member!._roles.includes(role.id)
     ).reduce(
       (coll: Collection<string, Role>, role) => coll.set(role.id, role),
