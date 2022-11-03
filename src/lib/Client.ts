@@ -146,7 +146,7 @@ export class Client extends EventEmitter {
             )) as Guild;
             const member = new Member(
               interaction._member,
-              interaction.guild.id,
+              interaction.guildId,
               this
             );
             interaction.guild.members.cache.set(member.id, member);

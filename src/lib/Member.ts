@@ -48,7 +48,7 @@ export class Member {
     this.roles = new GuildMemberRoleManager(this.client, this, this.guildId);
     this.roles.cache.set(
       this.guildId,
-      this.guild?.roles.cache.get(this.guild.id) as Role
+      this.guild?.roles.cache.get(this.guildId) as Role
     );
   }
   toString(): `<@${string}>` {

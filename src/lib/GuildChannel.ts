@@ -140,7 +140,7 @@ export class GuildChannel extends Channel {
     }
 
     const everyoneOverwrites = this.permissionOverwrites.cache.get(
-      this.guild!.id
+      this.guildId
     );
     const roleOverwrites = this.permissionOverwrites.cache.get(role.id);
 
