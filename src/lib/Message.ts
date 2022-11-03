@@ -196,14 +196,12 @@ export class Message {
       this.client.rest.get(Routes.channelMessage(this.channelId, this.id)),
       this.client
     );
-    this.client.messages.set(message.id, message);
     return message;
   }
   async delete() {
     await this.client.rest.delete(
       Routes.channelMessage(this.channelId, this.id)
     );
-    return this.client.messages.delete(this.id);
   }
   toString() {
     return `${this.id}`;

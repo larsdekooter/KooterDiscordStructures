@@ -67,7 +67,7 @@ export class Client extends EventEmitter {
   isReady = false;
   partialGuilds = new Collection<string, PartialGuild>();
   token = process.env.token;
-  messages = new Collection<string, Message>();
+  // messages = new Collection<string, Message>();
   users = new UserManager(this);
   application = new ClientApplication({} as APIApplication, this);
   user: ClientUser;
