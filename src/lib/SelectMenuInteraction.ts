@@ -144,7 +144,7 @@ export class UserSelectMenuInteraction extends BaseSelectMenuInteraction {
           continue;
         }
         member.user = user;
-        const m = new Member(member, this.guild!.id, this.client);
+        const m = new Member(member, this.guildId as string, this.client);
         this.members.set(id, m);
         this.guild?.members.cache.set(id, m);
       }
@@ -186,7 +186,7 @@ export class MentionableSelectMenuInteraction extends BaseSelectMenuInteraction 
           continue;
         }
         member.user = user;
-        const m = new Member(member, this.guild?.id as string, this.client);
+        const m = new Member(member, this.guildId as string, this.client);
         this.members.set(id, m);
         this.guild?.members.cache.set(id, m);
       }
