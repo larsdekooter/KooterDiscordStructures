@@ -22,15 +22,15 @@ const gen = GenerateId();
 //   type?: string;
 // };
 
-export declare interface Collector {
+export declare interface Collector extends EventEmitter {
   on<K extends keyof CollectorEvents>(
     event: K,
     listener: (...args: CollectorEvents[K]) => void
-  ): any;
+  ): this;
   once<K extends keyof CollectorEvents>(
     event: K,
     listener: (...args: CollectorEvents[K]) => void
-  ): any;
+  ): this;
 }
 
 export class Collector extends EventEmitter {
@@ -97,12 +97,6 @@ export class Collector extends EventEmitter {
   #removeFromClientCollectors() {
     this.client.collectors.delete(this.#amount);
     return this.client.collectors;
-  }
-  on<K extends keyof CollectorEvents>(
-    event: K,
-    listener: (...args: CollectorEvents[K]) => void
-  ) {
-    super.on(event, listener as (...args: any[]) => void);
   }
 }
 
