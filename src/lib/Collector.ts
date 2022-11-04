@@ -70,10 +70,12 @@ export class Collector extends EventEmitter {
   collect(interaction: MessageComponentInteraction) {
     if (this.#ended) return;
     const filterBool = this.filter(interaction) as boolean;
-    if (this.#message?.id !== interaction.message.id) {
+    if (this.#message && this.#message?.id !== interaction.message.id) {
+      console.log("wrongmessage", this.#message?.id, interaction.message.id);
       return this.emit("wrongMessage", interaction);
     }
-    if (this.#channel?.id !== interaction.channel?.id) {
+    if (this.#channel && this.#channel?.id !== interaction.channel?.id) {
+      console.log("wrongChannel", this.#channel?.id, interaction.channel?.id);
       return this.emit("wrongMessage", interaction);
     }
     if (filterBool) {
