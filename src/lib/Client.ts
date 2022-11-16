@@ -139,11 +139,13 @@ export class Client extends EventEmitter {
               break;
             }
           }
-          await this.channels.fetch(interaction.channelId);
+          await this.channels
+            .fetch(interaction.channelId)
+            .catch((e) => this.emit("debug", e.message));
           if (interaction.guildId) {
-            interaction.guild = (await this.guilds.fetch(
-              interaction.guildId
-            )) as Guild;
+            interaction.guild = (await this.guilds
+              .fetch(interaction.guildId)
+              .catch((e) => this.emit("debug", e.message))) as Guild;
             const member = new Member(
               interaction._member,
               interaction.guildId,
