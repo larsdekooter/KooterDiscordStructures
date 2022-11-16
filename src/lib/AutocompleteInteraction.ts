@@ -6,6 +6,7 @@ import {
   Routes,
 } from "discord-api-types/v10";
 import { Client } from "./Client.js";
+import { CommandInteractionOptionResolver } from "./CommandInteractionOptionResolver.js";
 import { Interaction } from "./Interaction.js";
 import { Response } from "./Util/HTTPTypes.js";
 export type AutocompleteInteractionData = {
@@ -25,6 +26,16 @@ export type AutocompleteInteractionData = {
 export class AutocompleteInteraction extends Interaction {
   data: AutocompleteInteractionData;
   responded: boolean;
+  options: Omit<
+    CommandInteractionOptionResolver,
+    | "getMessage"
+    | "getUser"
+    | "getAttachment"
+    | "getChannel"
+    | "getMember"
+    | "getMentionable"
+    | "getRole"
+  >;
   constructor(res: Response, interaction: any, client: Client) {
     super(res, interaction, client);
     this.data = {
@@ -33,7 +44,11 @@ export class AutocompleteInteraction extends Interaction {
       name: interaction.data.name,
       options: interaction.data.options,
     };
-
+    this.options = new CommandInteractionOptionResolver(
+      interaction.data.options ?? [],
+      this.client,
+      this.guildId
+    );
     this.responded = false;
   }
   get commandName() {

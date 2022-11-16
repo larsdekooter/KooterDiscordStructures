@@ -1,20 +1,24 @@
+import {
+  APIApplicationCommandInteractionData,
+  APIContextMenuInteractionData,
+  APIGuildMember,
+  APIInteractionDataResolvedGuildMember,
+  APIMessage,
+  APIUser,
+  ApplicationCommandOptionType,
+  ApplicationCommandType,
+} from "discord-api-types/v10.js";
 import { Client } from "./Client.js";
+import { CommandInteractionOption } from "./CommandInteraction.js";
 import { ContextMenuCommandInteraction } from "./ContextMenuCommandInteraction.js";
-import { UserContextMenuCommandInteractionOptionResolver } from "./UserContextMenuCommandInteractionOptionResolver.js";
+import { User } from "./User.js";
 import { Response } from "./Util/HTTPTypes.js";
 
 export class UserContextMenuCommandInteraction extends ContextMenuCommandInteraction {
   targetId: string;
-  options: UserContextMenuCommandInteractionOptionResolver;
   constructor(res: Response, interaction: any, client: Client) {
     super(res, interaction, client);
     const { data } = interaction;
     this.targetId = data.target_id;
-    this.options = new UserContextMenuCommandInteractionOptionResolver(
-      data.resolved,
-      this.targetId,
-      this.client,
-      this.guild
-    );
   }
 }

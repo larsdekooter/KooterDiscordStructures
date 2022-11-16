@@ -70,7 +70,7 @@ export function findChannelType(apiChannel: any, client: Client) {
   return channel;
 }
 
-type Channels =
+export type Channels =
   | NewsChannel
   | CategoryChannel
   | ForumChannel

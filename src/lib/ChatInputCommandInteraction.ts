@@ -6,6 +6,13 @@ import { ChatInputCommandInteractionOptionResolver } from "./ChatInputCommandInt
 import { Response } from "./Util/HTTPTypes.js";
 import { Client } from "./Client.js";
 import { CommandInteraction } from "./CommandInteraction.js";
+import { User } from "./User.js";
+import { Member } from "./Member.js";
+import { Channel } from "./Channel.js";
+import { Role } from "./Role.js";
+import { Attachment } from "./Util/InteractionOptionType.js";
+import { Message } from "./Message.js";
+import { CommandInteractionOptionResolver } from "./CommandInteractionOptionResolver.js";
 export type CommandInteractionData = {
   guildId: string;
   id: string;
@@ -18,13 +25,20 @@ export type CommandInteractionData = {
 export type CommandInteractionOption = {
   name: string;
   type: ApplicationCommandOptionType;
-  value: string;
+  value?: string | boolean | number;
   options?: CommandInteractionOption[];
+  autocomplete?: boolean;
+  user?: User;
+  member?: Member;
+  channel?: Channel;
+  role?: Role;
+  attachment?: Attachment;
+  message?: Message;
 };
 
 export class ChatInputCommandInteraction extends CommandInteraction {
   data: CommandInteractionData;
-  options: ChatInputCommandInteractionOptionResolver;
+  options: Omit<CommandInteractionOptionResolver, "getMessage" | "getFocused">;
   constructor(res: Response, interaction: any, client: Client) {
     super(res, interaction, client);
     this.data = {
@@ -35,9 +49,12 @@ export class ChatInputCommandInteraction extends CommandInteraction {
       type: interaction.data.type,
       resolved: interaction.data.resolved,
     };
-    this.options = new ChatInputCommandInteractionOptionResolver(
-      this,
-      this.client
+    this.options = new CommandInteractionOptionResolver(
+      interaction.data.options?.map((option) =>
+        this.transformOption(option, interaction.data.resolved)
+      ) ?? [],
+      this.client,
+      this.guildId
     );
   }
 
