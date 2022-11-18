@@ -7,7 +7,7 @@ export class PermissionsBitField extends BitField {
     (all, p) => all | p,
     0n
   );
-  static = BigInt(104324673);
+  static Default = BigInt(104324673);
   static StageModerator =
     PermissionFlagsBits.ManageChannels |
     PermissionFlagsBits.MuteMembers |

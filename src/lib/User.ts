@@ -6,6 +6,7 @@ import {
 } from "@discordjs/builders";
 import { ImageURLOptions } from "@discordjs/rest";
 import { UserPremiumType } from "discord-api-types/v10";
+import { UserFlagsBitfield } from "./UserFlagsBitfield.js";
 import { AttachmentBuilder } from "./AttachmentBuilder.js";
 import { Client } from "./Client.js";
 import { Message } from "./Message.js";
@@ -24,9 +25,8 @@ export class User {
   accentColor?: number;
   locale?: string;
   verified?: boolean;
-  flags?: number;
+  flags?: UserFlagsBitfield;
   premiumType?: UserPremiumType;
-  publicFlags?: number;
   client: Client;
   constructor(data: any, client: Client) {
     this.id = data.id;
@@ -40,9 +40,8 @@ export class User {
     this.accentColor = data.accent_color;
     this.locale = data.locale;
     this.verified = data.verified;
-    this.flags = data.flags;
     this.premiumType = data.premiumType;
-    this.publicFlags = data.public_flags;
+    this.flags = new UserFlagsBitfield(data.public_flags);
     this.client = client;
   }
   get tag() {
