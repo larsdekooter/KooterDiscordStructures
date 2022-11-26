@@ -8,6 +8,7 @@ import {
 import { Client } from "./Client.js";
 import { Emoji } from "./Emoji.js";
 import { GuildChannel } from "./GuildChannel.js";
+import { GuildAutoModRuleManager } from "./Managers/GuildAutoModRuleManager.js";
 import { GuildBanManager } from "./Managers/GuildBanManager.js";
 import { GuildChannelManager } from "./Managers/GuildChannelManager.js";
 import { GuildEmojiManager } from "./Managers/GuildEmojiManager.js";
@@ -63,6 +64,7 @@ export class Guild {
   channels: GuildChannelManager;
   bans: GuildBanManager;
   emojis: GuildEmojiManager;
+  autoModRules: GuildAutoModRuleManager;
   constructor(data: any, client: Client) {
     this.id = data.id;
     this.client = client;
@@ -158,6 +160,7 @@ export class Guild {
       .forEach((channel) =>
         this.channels.cache.set(channel.id, channel as GuildChannel)
       );
+    this.autoModRules = new GuildAutoModRuleManager(this.id, this.client);
   }
   static async build(id: string, client: Client): Promise<Guild> {
     const guild = (await client.rest.get(Routes.guild(id))) as APIGuild;

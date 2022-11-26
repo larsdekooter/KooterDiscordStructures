@@ -9,6 +9,7 @@ export * from "./lib/Managers/GuildMemberRoleManager.js";
 export * from "./lib/Managers/GuildRoleManager.js";
 export * from "./lib/Managers/Manager.js";
 export * from "./lib/Managers/UserManager.js";
+export * from "./lib/Managers/GuildAutoModRuleManager.js";
 
 // Main Structures
 export * from "./lib/AttachmentBuilder.js";
